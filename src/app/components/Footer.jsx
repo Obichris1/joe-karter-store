@@ -1,0 +1,68 @@
+// components/Footer.js
+import Image from "next/image";
+import { TextField, Typography, Button } from "@mui/material";
+
+const Footer = () => {
+  return (
+    <footer className="bg-white pt-10">
+      {/* Newsletter */}
+      <div
+        className="bg-cover bg-black bg-center rounded-xl mx-4 md:mx-20 p-10 text-white  text-center"
+        style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
+      >
+        <h2 className="text-2xl md:text-2xl font-bold  mb-4">
+          SUBSCRIBE TO OUR NEWSLETTER
+        </h2>
+        <p className="text-sm md:text-base mb-6 max-w-2xl  mx-auto">
+          Discover fashion that speaks your vibe. Curated trends, timeless
+          pieces, and effortless style—because you deserve to stand out.
+        </p>
+
+        <form className="flex flex-col  justify-center items-center gap-4">
+          <TextField
+            label="Enter Email"
+            type="email"
+            className="rounded-full  bg-white text-black w-full md:w-2xl text-sm"
+          />
+          <button
+            variant="outlined"
+            type="submit"
+            // color='white'
+            className="px-6 py-3 bg-white text-black text-sm rounded-full  font-semibold"
+          >
+            SUBSCRIBE
+          </button>
+        </form>
+      </div>
+
+      {/* Footer Links */}
+      <div className="flex flex-col md:flex-row items-center gap-6 px-6 md:px-20 py-10 text-sm justify-center  text-black">
+        <div className="flex flex-col items-center gap-2">
+          <a href="#">Home</a>
+          <a href="#">Who we are</a>
+          <a href="#">Why us</a>
+          <a href="#">Contact Us</a>
+        </div>
+
+        <div className="flex flex-col items-center  gap-2">
+          <a href="#">Linkedin</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+        </div>
+      </div>
+
+      {/* JK Logo */}
+      <div className="flex justify-center pb-8">
+        <Image
+          src="/images/jk-logo.png"
+          alt="Joe Karter Logo"
+          width={40}
+          height={40}
+        />
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
