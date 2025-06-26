@@ -1,5 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit"
-import cartReducer from "./slices/cartSlice"
+// redux/store.js
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import cartReducer from "./slices/cartSlice";
+import wishlistReducer from "./slices/wishlistSlice";
+
 import {
   persistStore,
   persistReducer,
@@ -9,10 +12,10 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist'
+} from 'redux-persist';
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
-const createNoopStorage = () => {    //dummy storage if te script is not running in a browser environment i.e typeof window === 'undefined'
+const createNoopStorage = () => {
   return {
     getItem(_key) {
       return Promise.resolve(null);
@@ -26,30 +29,34 @@ const createNoopStorage = () => {    //dummy storage if te script is not running
   };
 };
 
-const storage = typeof window !== "undefined"  //This can be used to detect whether code is running in a typical browser environment (e.g. an environment with a browser DOM) or in some other JS environment since the window object exists in a typical browser JS,
-// but does not exist in something like node.js or even a webWorker in a browser.
- ? createWebStorage("local") : createNoopStorage();
+const storage = typeof window !== "undefined"
+  ? createWebStorage("local")
+  : createNoopStorage();
 
+// ✅ Combine reducers
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  wishlist: wishlistReducer,
+});
 
+// ✅ Persist the root reducer
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-}
+};
 
-const persistedReducer = persistReducer(persistConfig, cartReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// ✅ Create the store
 export const storeSlice = configureStore({
-  reducer: {cart:persistedReducer},
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+});
 
-  
-})
-
-export let persistor = persistStore(storeSlice)
-
+export const persistor = persistStore(storeSlice);

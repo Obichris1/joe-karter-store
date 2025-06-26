@@ -1,6 +1,6 @@
 // components/Footer.js
 import Image from "next/image";
-import { TextField, Typography, Button } from "@mui/material";
+import { TextField, Typography, Button,Divider } from "@mui/material";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
         className="bg-cover bg-black bg-center rounded-xl mx-4 md:mx-20 p-10 text-white  text-center"
         style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
       >
-        <h2 className="text-2xl md:text-2xl font-bold  mb-4">
+        <h2 className="text-xl md:text-2xl font-bold  mb-4">
           SUBSCRIBE TO OUR NEWSLETTER
         </h2>
         <p className="text-sm md:text-base mb-6 max-w-2xl  mx-auto">
@@ -19,18 +19,19 @@ const Footer = () => {
         </p>
 
         <form className="flex flex-col  justify-center items-center gap-4">
-          <TextField
+          <input
             label="Enter Email"
             type="email"
-            className="rounded-full  bg-white text-black w-full md:w-2xl text-sm"
+            placeholder="Enter Email"
+            className="!rounded-full px-8 py-4  bg-white !text-black w-full md:!w-2xl !text-sm"
           />
           <button
             variant="outlined"
             type="submit"
             // color='white'
-            className="px-6 py-3 bg-white text-black text-sm rounded-full  font-semibold"
+            className="px-8 py-3 bg-white text-black text-sm rounded-full capitalize  font-semibold"
           >
-            SUBSCRIBE
+            Subscribe
           </button>
         </form>
       </div>
@@ -41,7 +42,7 @@ const Footer = () => {
           <a href="#">Home</a>
           <a href="#">Who we are</a>
           <a href="#">Why us</a>
-          <a href="#">Contact Us</a>
+          <a href="/contact">Contact Us</a>
         </div>
 
         <div className="flex flex-col items-center  gap-2">
@@ -51,14 +52,14 @@ const Footer = () => {
           <a href="#">Facebook</a>
         </div>
       </div>
-
+       <Divider />
       {/* JK Logo */}
-      <div className="flex justify-center pb-8">
+      <div className="flex justify-center pb-1">
         <Image
-          src="/images/jk-logo.png"
+          src="/logo.png"
           alt="Joe Karter Logo"
-          width={40}
-          height={40}
+          width={60}
+          height={60}
         />
       </div>
     </footer>

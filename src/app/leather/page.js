@@ -2,6 +2,8 @@ import React from 'react'
 import HeroBanner from '../components/Banner'
 import { client } from '@/sanity/lib/client';
 import ProductSections from '../components/Products';
+import AboutBanner from '../components/AboutBanner';
+import { Divider } from '@mui/material';
 
 const LeatherProducts = async () => {
 
@@ -13,6 +15,9 @@ const LeatherProducts = async () => {
     <div className='space-y-12'>
        <HeroBanner banners={banners.length && banners}   /> 
        <ProductSections products={products} />
+       <Divider className='!mb-10 !mt-10'/>
+       <AboutBanner />
+       <Divider className='!mb-10 !mt-10'/>
     </div>
   )
 }
@@ -21,7 +26,7 @@ const LeatherProducts = async () => {
 export const getData = async () => {
     // const query = '*[_type == "product"]';
     // const products = await client.fetch(query);
-    const bannerQuery = `*[_type == "banner" && category == "leather"]{ title, image, ctaText, ctaLink }`;
+    const bannerQuery = `*[_type == "banner" && category == "leather"]{ title, subTitle, image, ctaText, ctaLink }`;
   
     const banners= await client.fetch(bannerQuery);
   

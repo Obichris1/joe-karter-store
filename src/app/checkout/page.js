@@ -1,95 +1,385 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
-import { paystackTestKey } from '@/sanity/env'
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import { paystackTestKey } from "@/sanity/env";
+import {
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+  Box,
+  Divider,
+  CircularProgress,
+  
+InputAdornment,
+  Paper,
+} from "@mui/material";
+import {
+  AiFillMail,
+  AiOutlineUser,
+  AiFillCheckCircle,
+  AiOutlinePhone,
+  AiOutlineMail,
+  AiOutlineCheckCircle,
+  AiFillPhone,
+  AiFillHome,
+  AiFillCode,
+  AiFillMoneyCollect,
+} from "react-icons/ai";
+
+import { motion } from "framer-motion";
 
 export default function CheckoutPage() {
-  const [isPaystackReady, setPaystackReady] = useState(false)
-  const cart = useSelector((state) =>  state.cart.productData)
-  console.log(cart);
-  
-  const router = useRouter()
+  const [isPaystackReady, setPaystackReady] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isCartLoading, setIsCartLoading] = useState(true);
+  const [agreed, setAgreed] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    promo: "",
+  });
 
-  const cartTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  const cart = useSelector((state) => state.cart.productData);
+  const router = useRouter();
+
+  const cartTotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://js.paystack.co/v1/inline.js'
-    script.async = true
-    script.onload = () => setPaystackReady(true)
-    document.body.appendChild(script)
-  }, [])
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+    script.onload = () => setPaystackReady(true);
+    document.body.appendChild(script);
+  }, []);
 
-  const handlePayment = () => {
+  useEffect(() => {
+    if (cart !== undefined) {
+      setIsCartLoading(false);
+    }
+  }, [cart]);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handlePayment = async () => {
     if (!isPaystackReady || !window.PaystackPop) {
-      toast.error('Payment system not ready. Please wait...')
-      return
+      toast.error("Payment system not ready. Please wait...");
+      return;
+    }
+
+    // Validate required fields
+    const requiredFields = [
+      "name",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "state",
+    ];
+    for (const field of requiredFields) {
+      if (!form[field]) {
+        toast.error(`Please complete your delivery information`);
+        return;
+      }
+    }
+
+    if (!agreed) {
+      toast.error("Please agree to the terms and conditions.");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form, cart, total: cartTotal }),
+      });
+
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error);
+    } catch (err) {
+      toast.error("Failed to send order details via email");
+      setIsProcessing(false);
+      return;
     }
 
     const handler = window.PaystackPop.setup({
-      key: paystackTestKey, // Replace with your Paystack public key
-      email: 'obichris202@gmail.com',  // Replace with real customer email
-      amount: cartTotal * 100, // Paystack uses kobo
-      currency: 'NGN',
+      key: paystackTestKey,
+      email: form.email,
+      amount: cartTotal * 100,
+      currency: "NGN",
       metadata: {
         custom_fields: [
           {
-            display_name: 'Mobile Number',
-            variable_name: 'mobile_number',
-            value: '+2348012345678',
+            display_name: "Customer Name",
+            variable_name: "customer_name",
+            value: form.name,
+          },
+          {
+            display_name: "Mobile Number",
+            variable_name: "mobile_number",
+            value: form.phone,
           },
         ],
       },
-      callback: function (response) {
-        toast.success('Payment successful! 🎉')
-        console.log('Payment successful', response)
-        router.push('/success') // Create this page
+      callback: function () {
+        toast.success("Payment successful! 🎉");
+        setIsProcessing(false);
+        router.push("/success");
       },
       onClose: function () {
-        toast('Transaction cancelled')
+        toast("Transaction cancelled");
+        setIsProcessing(false);
       },
-    })
+    });
 
-    handler.openIframe()
+    handler.openIframe();
+  };
+
+  // Handle loading or empty cart
+  if (isCartLoading) {
+    return (
+      <Box className="flex justify-center items-center min-h-[60vh]">
+        <CircularProgress color="#000" />
+      </Box>
+    );
+  }
+
+  if (cart.length === 0) {
+    return (
+      <Box className="max-w-3xl mx-auto py-20 px-6 text-center">
+        <Typography variant="h5" fontWeight="bold">
+          Your cart is empty.
+        </Typography>
+      </Box>
+    );
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-6">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+    <div className="flex flex-col md:w-[90%] mx-auto py-12 px-6 md:flex-row gap-36">
+      {/* Shipping Info */}
+      <motion.div
+        initial={{ x: -80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="w-full md:w-[50%]"
+      >
+        <Paper elevation={2} sx={{ p: 4, borderRadius: 4 }}>
+          <Typography variant="h6" fontWeight="bold" className="!mb-6">
+            Shipping Information
+          </Typography>
+          <Box display="flex" flexDirection="column" gap={3}>
+            <TextField
+              fullWidth
+              required
+              label="Full Name"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiOutlineUser />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              required
+              label="Email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillMail />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              required
+              label="Phone Number"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillPhone />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              required
+              label="Street Address"
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillHome/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              
+            />
+            <Box display="flex" gap={2}>
+              <TextField
+                fullWidth
+                required
+                label="City"
+                name="city"
+                value={form.city}
+                onChange={handleChange}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AiFillHome/>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                label="State"
+                name="state"
+                value={form.state}
+                onChange={handleChange}
+                slotProps={{
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AiFillHome/>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </Box>
+            <TextField
+              fullWidth
+              label="Promo Code (optional)"
+              name="promo"
+              value={form.promo}
+              onChange={handleChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillMoneyCollect/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <FormControlLabel
+            className="p-0 !text-xs "
+              control={
+                <Checkbox
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  color="#000"
 
-      {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <>
-          <ul className="mb-6 space-y-4">
+                  
+                />
+              }
+            
+              label="I agree to the Terms and Conditions"
+            />
+          </Box>
+        </Paper>
+      </motion.div>
+
+      {/* Order Summary */}
+      <motion.div
+        initial={{ x: 80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="flex-1"
+      >
+        <Paper elevation={2} sx={{ p: 4, borderRadius: 4 }}>
+          <Typography variant="h6" fontWeight="bold" className="!mb-6">
+            Order Summary
+          </Typography>
+          <Box className="space-y-12">
             {cart.map((item) => (
-              <li key={item._id} className="flex justify-between border-b pb-2">
-                <span>{item.title} x {item.quantity}</span>
-                <span>₦{(item.price * item.quantity).toLocaleString()}</span>
-              </li>
+              <Box
+                key={item._id}
+                className="flex justify-between border-b pb-2 text-sm text-gray-700"
+              >
+                <span className="font-semibold">
+                  {item.title} × {item.quantity}
+                </span>
+                <span className="font-bold">
+                  ₦{(item.price * item.quantity).toLocaleString()}
+                </span>
+              </Box>
             ))}
-          </ul>
-
-          <div className="text-right mb-6">
-            <p className="text-xl font-semibold">
-              Total: ₦{cartTotal.toLocaleString()}
-            </p>
-          </div>
-
-          <button
-            onClick={handlePayment}
-            disabled={!isPaystackReady}
-            className={`w-full py-3 rounded text-white font-semibold ${
-              isPaystackReady ? 'bg-black' : 'bg-gray-500 cursor-not-allowed'
-            }`}
-          >
-            {isPaystackReady ? 'Pay with Paystack' : 'Loading Payment...'}
-          </button>
-        </>
-      )}
+            <Divider className="!space-y-8 !mb-8 !mt-8" />
+            <Box className="flex justify-between text-lg font-semibold">
+              <span>Total:</span>
+              <span>₦{cartTotal.toLocaleString()}</span>
+            </Box>
+            <Button
+              variant="contained"
+              fullWidth
+              size="large"
+              onClick={handlePayment}
+              disabled={!isPaystackReady || isProcessing}
+              sx={{
+                backgroundColor: isPaystackReady ? "#000" : "#999",
+                color: "#fff",
+                mt: 2,
+                "&:hover": {
+                  backgroundColor: isPaystackReady ? "#111" : "#999",
+                  scale: "-moz-initial"
+                },
+              }}
+            >
+              {isProcessing ? (
+                <CircularProgress size={24} sx={{ color: "#000" }} />
+              ) : (
+                <Typography className="!text-xs md:!text-sm  ">Pay with pay stack</Typography>
+              )}
+            </Button>
+          </Box>
+        </Paper>
+      </motion.div>
+      <Toaster />
     </div>
-  )
+  );
 }

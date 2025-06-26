@@ -36,6 +36,8 @@ const HeroBanner = ({ banners }) => {
   if (!banners || banners.length === 0) return null;
 
   const banner = banners[current];
+  // console.log(banner);
+  
 
   return (
     <div className="relative w-full h-[80vh] overflow-hidden">
@@ -51,24 +53,28 @@ const HeroBanner = ({ banners }) => {
             backgroundImage: `url(${urlFor(banner.image).width(1600).url()})`,
           }}
         >
-          <div className="absolute inset-0 bg-black/40 flex items-center px-10 lg:px-20">
-            <div className="text-white max-w-2xl space-y-5">
-              <h1 className="text-4xl md:text-5xl font-bold">
+          <div className="absolute inset-0 bg-black/60 flex items-end px-10 lg:px-20">
+            <div className="text-white max-w-3xl mb-30">
+              <div className="flex flex-col gap-8">
+              <h1 className="text-2xl md:text-4xl font-bold">
                 {banner.title}
               </h1>
 
-              <h4>
-                {banner?.subTitle}
+              <h4 className="text-xl text-white md:text-2xl ">
+                {banner.subTitle}
               </h4>
-              <p className="text-lg text-white/90">{banner.subtitle}</p>
-              {banner.ctaLink && banner.ctaText && (
-                <Link
-                  href={banner.ctaLink}
-                  className="bg-white text-black font-semibold px-6 py-3 rounded-full inline-block"
+               
+              <Link
+                  href='/shop'
+                  className="bg-white text-black font-semibold px-6 py-3 w-32 rounded-full inline-block"
                 >
-                  {banner.ctaText}
+                  Shop Now
                 </Link>
-              )}
+              </div>
+         
+             
+             
+           
             </div>
           </div>
         </motion.div>

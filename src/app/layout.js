@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import { storeSlice } from "@/redux/store";
 import { ReduxProvider } from "./configs/redux-provider";
 import Script from "next/script";
+import WhatsAppIcon from "./components/WhatsappIcon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           <Header />
 
           {children}
+          <WhatsAppIcon />
         </ReduxProvider>
         <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
         <Footer />

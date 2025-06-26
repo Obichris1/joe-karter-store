@@ -10,21 +10,21 @@ export default function HeroCategories() {
       title: 'Shop Leather',
       description:
         'Discover fashion that speaks your vibe. Curated trends, timeless pieces, and effortless style—because you deserve to stand out.',
-      image: '/assets/leather.jpeg',
-      route: '/leather-goods',
+      image: '/assets/leather/HomeImage2.jpg',
+      route: '/leather',
     },
     {
       title: 'Shop Gym Wears',
       description:
         'Discover fashion that speaks your vibe. Curated trends, timeless pieces, and effortless style—because you deserve to stand out.',
       image: '/assets/gym2.jpeg',
-      route: '/gym-wears',
+      route: '/athleisure',
     },
   ];
 
   return (
     <section className="py-12 px-4 md:px-16">
-      <Typography variant="h4" className="text-2xl md:text-6xl !font-bold text-left !mb-10">
+      <Typography variant="h4" className="!text-base md:!text-3xl !font-bold text-left !mb-10">
         Elevate Your Style With Handcrafted Leather
         <br className="hidden md:block" /> Goods & Premium Gym Essentials.
       </Typography>
@@ -45,11 +45,11 @@ export default function HeroCategories() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
 
               {/* Text Content */}
-              <div className="absolute bottom-0 z-20 p-6 text-white w-full flex flex-col md:flex-row gap-4 md:items-center md:justify-between space-y-4 md:space-y-0">
-                <Typography className="text-sm md:!text-xs !max-w-sm !leading-6">
+              <div className="absolute bottom-0 z-20 p-6 text-white w-full flex flex-col md:flex-row gap-8 md:items-center md:justify-between space-y-4 md:space-y-0">
+                <Typography className="!text-xs md:!text-sm !max-w-sm !leading-6">
                   {cat.description}
                 </Typography>
-                <Button variant="contained"  className="!px-4 !py-3 !rounded-full !text-sm !bg-white !text-black hover:!bg-black hover:!text-white !transition ">
+                <Button variant="contained"  className=" !flex !w-1/2 !px-4 !py-3 !rounded-full !text-xs !font-bold !bg-white !text-black hover:!bg-black hover:!text-white !transition ">
                   {cat.title}
                 </Button>
               </div>
