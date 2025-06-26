@@ -6,7 +6,7 @@ import Link from "next/link";
 import { FaHeart, FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
-import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishlistSlice";
+import { addToWishlist,removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 

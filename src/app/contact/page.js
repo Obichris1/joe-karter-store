@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import ContactForm from "../Components/ContactForm";
+import ContactForm from "../components/ContactForm";
 import { Typography, Paper,Divider } from "@mui/material";
 import MapEmbed from "../components/MapEmbed";
 import Link from "next/link";

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
-import { removeFromWishlist } from "@/redux/slices/wishlistSlice";
+import { removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { toast } from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
