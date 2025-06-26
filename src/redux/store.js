@@ -1,7 +1,7 @@
 // redux/store.js
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import cartReducer from "./slices/cartSlice";
-import wishlistReducer from "./slices/wishlistSlice";
+import wishlistReducer from "./slices/wishListSlice";
 
 import {
   persistStore,
