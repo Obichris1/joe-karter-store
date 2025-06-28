@@ -10,7 +10,7 @@ export default function HeroCategories() {
       title: 'Shop Leather',
       description:
         'Discover fashion that speaks your vibe. Curated trends, timeless pieces, and effortless style—because you deserve to stand out.',
-      image: '/assets/leather/HomeImage2.jpg',
+      image: '/assets/HomeImage2.jpg',
       route: '/leather',
     },
     {

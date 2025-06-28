@@ -62,7 +62,7 @@ export default function AboutBanner() {
           className="flex justify-center"
         >
           <Image
-            src="/assets/leather/Leather Banner2.jpg"
+            src="/assets/Leather Banner2.jpg"
             alt="Glassdoor Award"
             width={400}
             height={300}

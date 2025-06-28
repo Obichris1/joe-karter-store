@@ -41,7 +41,7 @@ const page = () => {
     {/* Banner Section */}
     <motion.div
         className="relative h-[40vh] bg-cover bg-center text-white flex items-center  justify-center"
-        style={{ backgroundImage: "url('/assets/leather/contactImg.jpg')" }}
+        style={{ backgroundImage: "url('/assets/contactImg.jpg')" }}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
