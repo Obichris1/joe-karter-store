@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { urlFor } from "@/sanity/lib/image";
+import { Typography } from "@mui/material";
 
 const HeroBanner = ({ banners }) => {
   const [current, setCurrent] = useState(0);
@@ -56,13 +57,13 @@ const HeroBanner = ({ banners }) => {
           <div className="absolute inset-0 bg-black/60 flex items-end px-10 lg:px-20">
             <div className="text-white max-w-3xl mb-30">
               <div className="flex flex-col gap-8">
-              <h1 className="text-2xl md:text-4xl font-bold">
+              <h1 className="text-2xl md:text-3xl font-bold">
                 {banner.title}
               </h1>
 
-              <h4 className="text-xl text-white md:text-2xl ">
+              <Typography className="!text-base text-white md:!text-xl ">
                 {banner.subTitle}
-              </h4>
+              </Typography>
                
               <Link
                   href='/shop'

@@ -53,7 +53,7 @@ export default function SearchPage() {
         <p>No products found.</p>
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {visibleProducts.map((product) => (
               <Link
                 key={product._id}

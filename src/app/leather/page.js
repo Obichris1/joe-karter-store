@@ -15,9 +15,9 @@ const LeatherProducts = async () => {
     <div className='space-y-12'>
        <HeroBanner banners={banners.length && banners}   /> 
        <ProductSections products={products} />
-       <Divider className='!mb-10 !mt-10'/>
+       <Divider className='md:!mb-10 md:!mt-10 !mb-5 !mt-5'/>
        <AboutBanner />
-       <Divider className='!mb-10 !mt-10'/>
+       <Divider className='md:!mb-10 md:!mt-10 !mb-5 !mt-5'/>
     </div>
   )
 }

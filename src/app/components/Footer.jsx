@@ -7,23 +7,24 @@ const Footer = () => {
     <footer className="bg-white pt-10">
       {/* Newsletter */}
       <div
-        className="bg-cover bg-black bg-center rounded-xl mx-4 md:mx-20 p-10 text-white  text-center"
+        className="bg-cover bg-black bg-center rounded-xl mx-4 md:mx-20 p-7 text-white  text-center"
         style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
       >
-        <h2 className="text-sm md:text-2xl font-bold  mb-4">
+        <h2 className="text-sm md:text-2xl font-bold mb-4">
           SUBSCRIBE TO OUR NEWSLETTER
         </h2>
         <p className="text-xs md:text-base mb-6 max-w-2xl  mx-auto">
-          Discover fashion that speaks your vibe. Curated trends, timeless
-          pieces, and effortless style—because you deserve to stand out.
+          {/* Discover fashion that speaks your vibe. Curated trends, timeless
+          pieces, and effortless style—because you deserve to stand out. */}
+          Stay updated with Joe Karter's latest leather and athleisure releases, new design concepts, upcoming events and lifestyle tips.
         </p>
 
         <form className="flex flex-col  justify-center items-center gap-4">
           <input
-            label="Enter Email"
+            label="Kindly enter your email"
             type="email"
-            placeholder="Enter Email"
-            className="!rounded-full md:px-8 px-4 py-4  bg-white !text-black w-full md:!w-2xl !text-xs md:text-sm"
+            placeholder="Please enter your email"
+            className="!rounded-full md:px-8 px-4 py-4  bg-white !text-black font-bold w-full md:!w-2xl text-xs md:text-base"
           />
           <button
             variant="outlined"

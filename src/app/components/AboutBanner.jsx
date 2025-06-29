@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 export default function AboutBanner() {
   return (
     <div className="">
-      <Box className="rounded-md w-[90%] p-4 mx-auto flex flex-col md:flex-row gap-24 items-center">
+      <Box className="rounded-md w-[90%] p-4 mx-auto flex flex-col md:flex-row md:gap-24 gap-16 items-center">
         {/* Left Section - Text */}
         <motion.div
           className="flex-1"
@@ -18,12 +18,12 @@ export default function AboutBanner() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           viewport={{ once: true }}
         >
-          <Typography className="!font-bold !mb-4 !text-lg md:!text-2xl">
+          <Typography className="!font-bold md:!mb-8 !mb-4 !text-lg md:!text-3xl">
             Need Leather?
           </Typography>
           <Typography
             variant="body1"
-            className="!text-sm md:!text-base !leading-7 md:!mb-18"
+            className="!text-sm md:!text-base !leading-6  md:!leading-7 md:!mb-12"
           >
             Our people have spoken and we’re #1 on Glassdoor’s Best Places to
             Work list in the Nigeria and the UK. Since the rankings debuted in
@@ -32,7 +32,7 @@ export default function AboutBanner() {
           </Typography>
           <Typography
             variant="body1"
-            className="!text-sm md:!text-base !mt-6 !leading-7"
+            className="!text-sm md:!text-base !mt-6 !leading-6 md:!leading-7"
           >
             Our people have spoken and we’re #1 on Glassdoor’s Best Places to
             Work list in the Nigeria and the UK. Since the rankings debuted in
@@ -45,10 +45,10 @@ export default function AboutBanner() {
             className="inline-block mt-6 group hover:text-[#00008B] hover:underline"
           >
             <div className="flex gap-2 items-center md:mt-10">
-              <Typography className="!text-sm md:!text-base">
+              <Typography className="!text-sm md:!text-base !font-bold !underline ">
                 Explore Products
               </Typography>
-              <FaArrowRight className="!text-sm md:!text-base group-hover:translate-x-2 transition-transform duration-300" />
+              <FaArrowRight className="!text-sm md:!text-base group-hover:translate-x-2 transition-transform duration-300 " />
             </div>
           </Link>
         </motion.div>
@@ -63,7 +63,7 @@ export default function AboutBanner() {
         >
           <Image
             src="/assets/Leather Banner2.jpg"
-            alt="Glassdoor Award"
+            alt=""
             width={400}
             height={300}
             className="rounded-xl shadow-md"

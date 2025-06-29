@@ -67,19 +67,19 @@ export default function ProductSections({ products }) {
         const visibleCount = visibleCounts[key];
 
         return (
-          <div key={key} className="px-4">
+          <div key={key} className="px-4 mb-24">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-semibold">{label}</h2>
+              <h2 className="text-lg md:text-2xl font-semibold">{label}</h2>
               <Link
                 href="/shop"
-                className="border px-5 py-2 rounded-full text-sm hover:bg-black hover:text-white transition"
+                className="border px-5 py-2 rounded-full text-xs md:text-sm  hover:bg-black hover:text-white transition"
               >
                 Shop Now
               </Link>
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {sectionProducts.slice(0, visibleCount).map((product) => (
                 <div
                   key={product._id}
