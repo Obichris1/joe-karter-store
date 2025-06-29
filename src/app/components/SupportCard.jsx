@@ -3,6 +3,7 @@
 import { FaStar, FaPhone, FaQuestionCircle } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const supportCards = [
   {
@@ -34,7 +35,11 @@ export default function SupportCards() {
     <div className="grid md:grid-cols-3 gap-6 mt-10 py-12 px-4 md:px-16">
       {supportCards.map((card, index) => (
         <Link href={card.href} key={index}>
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.2 }}
+            whileHover={{ scale: 1.03 }}
             className={`relative rounded-2xl p-6 min-h-[200px] flex flex-col justify-end transform transition-transform duration-300 hover:scale-105 cursor-pointer ${
               card.dark ? 'text-white overflow-hidden' : 'bg-gray-100 text-black'
             }`}
@@ -58,7 +63,7 @@ export default function SupportCards() {
               <h3 className="text-lg font-semibold">{card.title}</h3>
               <p className="text-sm">{card.description}</p>
             </div>
-          </div>
+          </motion.div>
         </Link>
       ))}
     </div>

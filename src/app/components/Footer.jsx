@@ -10,10 +10,10 @@ const Footer = () => {
         className="bg-cover bg-black bg-center rounded-xl mx-4 md:mx-20 p-10 text-white  text-center"
         style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
       >
-        <h2 className="text-xl md:text-2xl font-bold  mb-4">
+        <h2 className="text-sm md:text-2xl font-bold  mb-4">
           SUBSCRIBE TO OUR NEWSLETTER
         </h2>
-        <p className="text-sm md:text-base mb-6 max-w-2xl  mx-auto">
+        <p className="text-xs md:text-base mb-6 max-w-2xl  mx-auto">
           Discover fashion that speaks your vibe. Curated trends, timeless
           pieces, and effortless style—because you deserve to stand out.
         </p>
@@ -23,13 +23,13 @@ const Footer = () => {
             label="Enter Email"
             type="email"
             placeholder="Enter Email"
-            className="!rounded-full px-8 py-4  bg-white !text-black w-full md:!w-2xl !text-sm"
+            className="!rounded-full md:px-8 px-4 py-4  bg-white !text-black w-full md:!w-2xl !text-xs md:text-sm"
           />
           <button
             variant="outlined"
             type="submit"
             // color='white'
-            className="px-8 py-3 bg-white text-black text-sm rounded-full capitalize  font-semibold"
+            className="px-8 py-3 bg-white text-black  text-xs md:text-sm rounded-full capitalize  font-semibold"
           >
             Subscribe
           </button>
@@ -38,14 +38,14 @@ const Footer = () => {
 
       {/* Footer Links */}
       <div className="flex flex-col md:flex-row items-center gap-6 px-6 md:px-20 py-10 text-sm justify-center  text-black">
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center text-xs gap-2">
           <a href="#">Home</a>
           <a href="#">Who we are</a>
           <a href="#">Why us</a>
           <a href="/contact">Contact Us</a>
         </div>
 
-        <div className="flex flex-col items-center  gap-2">
+        <div className="flex flex-col items-center text-xs  gap-2">
           <a href="#">Linkedin</a>
           <a href="#">Twitter</a>
           <a href="#">Instagram</a>
@@ -56,7 +56,7 @@ const Footer = () => {
       {/* JK Logo */}
       <div className="flex justify-center pb-1">
         <Image
-          src="/logo.png"
+          src="/Jk.png"
           alt="Joe Karter Logo"
           width={60}
           height={60}
