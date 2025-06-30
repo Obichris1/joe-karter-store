@@ -59,7 +59,7 @@ export default function ProductSections({ products }) {
   };
 
   return (
-    <div className="space-y-12 w-[90%] m-auto">
+    <div className="space-y-12 w-[95%] m-auto">
       {Object.entries(sections).map(([key, label]) => {
         const sectionProducts = getSectionProducts(key);
         const visibleCount = visibleCounts[key];
@@ -77,7 +77,7 @@ export default function ProductSections({ products }) {
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 md:gap-6 gap-4 ">
               {sectionProducts.slice(0, visibleCount).map((product) => (
                 <Link
                   key={product._id}
@@ -94,7 +94,7 @@ export default function ProductSections({ products }) {
                       className="object-cover"
                     />
                   </div>
-                  <div className="p-3 space-y-1 flex flex-col">
+                  <div className="p-3  flex flex-col">
                     <h3 className="font-semibold text-sm">{product.title}</h3>
                     <p className="text-xs text-gray-500">{product.category}</p>
                     <p className="font-bold text-sm md:text-base self-end">
@@ -102,7 +102,7 @@ export default function ProductSections({ products }) {
                     </p>
 
                     {/* Buttons - Always visible */}
-                    <div className="flex justify-between items-center mt-3">
+                    <div className="flex justify-between items-center mt-2">
                       <button
                         onClick={(e) => handleWishlistToggle(e, product)}
                         className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
