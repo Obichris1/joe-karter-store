@@ -6,9 +6,8 @@ import Link from "next/link";
 import { FaHeart, FaShoppingCart, FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
-import { addToWishlist,removeFromWishlist } from "@/redux/slices/wishListSlice";
-import { toast } from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishListSlice";
+import { toast, Toaster } from "react-hot-toast";
 
 const sections = {
   topPicks: "Our Top Picks",
@@ -22,7 +21,6 @@ export default function ProductSections({ products }) {
     featured: 3,
     new: 8,
   });
-  const [hoveredProduct, setHoveredProduct] = useState(null);
   const dispatch = useDispatch();
 
   const wishlistData = useSelector(
@@ -79,94 +77,76 @@ export default function ProductSections({ products }) {
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
               {sectionProducts.slice(0, visibleCount).map((product) => (
-                <div
+                <Link
                   key={product._id}
-                  className="relative group"
-                  onMouseEnter={() => setHoveredProduct(product._id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
+                  href={`/product/${product.slug.current}`}
+                  className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block"
                 >
-                  <Link
-                    href={`/product/${product.slug.current}`}
-                    className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block"
-                  >
-                    <div className="aspect-square relative rounded-t-2xl overflow-hidden">
-                      <Image
-                        src={
-                          product.images?.[0]?.asset?.url || "/placeholder.jpg"
-                        }
-                        alt={product.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-3">
-                      <h3 className="font-semibold text-sm">{product.title}</h3>
-                      <p className="text-xs text-gray-500">
-                        {product.category}
-                      </p>
-                      <p className="font-bold text-right text-sm mt-1">
-                        ₦{Number(product.price).toLocaleString()}
-                      </p>
-                    </div>
-                  </Link>
-
-                  {/* Action Buttons */}
-                  <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button
-                      onClick={(e) => handleWishlistToggle(e, product)}
-                      className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-                      aria-label={
-                        isInWishlist(product._id)
-                          ? "Remove from wishlist"
-                          : "Add to wishlist"
+                  <div className="aspect-square relative rounded-t-2xl overflow-hidden">
+                    <Image
+                      src={
+                        product.images?.[0]?.asset?.url || "/placeholder.jpg"
                       }
-                    >
-                      {isInWishlist(product._id) ? (
-                        <FaHeart className="text-red-500" />
-                      ) : (
-                        <FaRegHeart />
-                      )}
-                    </button>
-                    <button
-                      onClick={(e) => handleAddToCart(e, product)}
-                      className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-                      aria-label="Add to cart"
-                    >
-                      <FaShoppingCart />
-                    </button>
+                      alt={product.title}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
+                  <div className="p-3 space-y-1 flex flex-col">
+                    <h3 className="font-semibold text-sm">{product.title}</h3>
+                    <p className="text-xs text-gray-500">{product.category}</p>
+                    <p className="font-bold text-sm md:text-base self-end">
+                      ₦{Number(product.price).toLocaleString()}
+                    </p>
 
-                  {/* Hover Description */}
-                  {hoveredProduct === product._id && product.description && (
-                    <div className="absolute bottom-20 left-0 right-0 bg-black bg-opacity-75 text-white text-xs p-2 mx-3 rounded pointer-events-none transition-opacity">
-                      {product.description.length > 100
-                        ? `${product.description.substring(0, 100)}...`
-                        : product.description}
+                    {/* Buttons - Always visible */}
+                    <div className="flex justify-between items-center mt-3">
+                      <button
+                        onClick={(e) => handleWishlistToggle(e, product)}
+                        className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
+                        aria-label={
+                          isInWishlist(product._id)
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                      >
+                        {isInWishlist(product._id) ? (
+                          <FaHeart className="text-red-500" />
+                        ) : (
+                          <FaRegHeart />
+                        )}
+                      </button>
+                      <button
+                        onClick={(e) => handleAddToCart(e, product)}
+                        className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
+                        aria-label="Add to cart"
+                      >
+                        <FaShoppingCart />
+                      </button>
                     </div>
-                  )}
-                </div>
+                  </div>
+                </Link>
               ))}
             </div>
 
             {/* Load More Button */}
             {visibleCount < sectionProducts.length && (
-  <div className="relative flex items-center justify-center my-20">
-    <div className="absolute inset-0 flex items-center" aria-hidden="true">
-      <div className="w-full border-t border-gray-300" />
-    </div>
-    <div className="relative z-10 bg-white px-4">
-      <button
-        onClick={() => handleLoadMore(key)}
-        className="border px-6 py-2 rounded-full text-sm hover:bg-black hover:text-white transition"
-      >
-        Load More
-      </button>
-    </div>
-  </div>
-)}
-
+              <div className="relative flex items-center justify-center my-20">
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative z-10 bg-white px-4">
+                  <button
+                    onClick={() => handleLoadMore(key)}
+                    className="border px-6 py-2 rounded-full text-sm hover:bg-black hover:text-white transition"
+                  >
+                    Load More
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         );
       })}

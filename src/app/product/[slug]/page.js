@@ -4,13 +4,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { FaMinus, FaPlus, FaRegHeart } from "react-icons/fa";
+import { FaMinus, FaPlus, FaRegHeart,FaHeart } from "react-icons/fa";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import toast, { Toaster } from "react-hot-toast";
-import { Button, Typography, Divider} from "@mui/material";
+import { Button, Typography, Divider } from "@mui/material";
 import Product from "@/app/components/Product";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "@/redux/slices/wishListSlice";
 
 export default function ProductPage() {
   const dispatch = useDispatch();
@@ -81,6 +85,25 @@ export default function ProductPage() {
     toast.success(`${product?.title.substring(0, 15)} added to cart`);
   };
 
+  const wishlistData = useSelector(
+    (state) => state.wishlist?.wishlistData || []
+  );
+
+  const isInWishlist = (id) =>
+    Array.isArray(wishlistData) && wishlistData.some((item) => item._id === id);
+
+  const handleWishlistToggle = () => {
+    if (!product) return;
+
+    if (isInWishlist(product._id)) {
+      dispatch(removeFromWishlist({ _id: product._id }));
+      toast("Removed from wishlist", { icon: "❌" });
+    } else {
+      dispatch(addToWishlist(product));
+      toast.success("Added to wishlist");
+    }
+  };
+
   if (!product) {
     return (
       <div className="p-10 flex justify-center items-center">
@@ -91,9 +114,9 @@ export default function ProductPage() {
 
   return (
     <div>
-      <div className="max-w-7xl mx-auto  py-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="max-w-7xl mx-auto w-[90%] py-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-40">
         {/* Images */}
-        <div className="space-y-4">
+        <div className="">
           <div className="relative aspect-auto  rounded-xl overflow-hidden">
             <Image
               src={product.images[selectedImage]?.asset.url}
@@ -119,10 +142,10 @@ export default function ProductPage() {
         </div>
 
         {/* Info */}
-        <div className="space-y-6 p-8">
+        <div className="space-y-8 md:space-y-6 ">
           <div>
-            <h1 className="text-2xl font-semibold mb-8">{product.title}</h1>
-            <p className="text-xl font-bold ">
+            <h1 className="text-base md:text-xl  mb-2">{product.title}</h1>
+            <p className="text-xl md:text-2xl font-bold ">
               ₦{Number(product.price).toLocaleString()}
             </p>
           </div>
@@ -173,35 +196,47 @@ export default function ProductPage() {
 
           {/* Quantity */}
           <div>
-            <h3 className="font-semibold mb-3">Quantity</h3>
+            <h3 className=" mb-3">Quantity</h3>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="border rounded-full p-2"
               >
-                <FaMinus size={14} />
+                <FaMinus size={14} className=" hover:cursor-pointer" />
               </button>
               <span className="text-base font-bold">{quantity}</span>
               <button
                 onClick={() => setQuantity((q) => q + 1)}
                 className="border rounded-full p-2"
               >
-                <FaPlus size={14} />
+                <FaPlus size={14} className=" hover:cursor-pointer" />
               </button>
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-8 items-center">
             <Button
               variant="contained"
               onClick={handleAddToCart}
-              className="!px-24 !py-3 !rounded-full  !text-sm !bg-black !text-white hover:scale-105  !transition-transform !duration-300 !ease-in-out !capitalize"
+              className="md:!px-18 px-12 !py-3 !rounded-full  !text-xs md:!text-sm !bg-black !text-white hover:scale-105  !transition-transform !duration-300 !ease-in-out !capitalize"
             >
               Add to Cart
             </Button>
-            <button className="border rounded-full p-3">
-              <FaRegHeart size={18} />
+            <button
+              className="border rounded-full p-3"
+              onClick={handleWishlistToggle}
+              aria-label={
+                isInWishlist(product._id)
+                  ? "Remove from wishlist"
+                  : "Add to wishlist"
+              }
+            >
+              {isInWishlist(product._id) ? (
+                <FaHeart size={18} className="text-red-500" />
+              ) : (
+                <FaRegHeart size={18} className="text-black" />
+              )}
             </button>
           </div>
 
@@ -214,7 +249,7 @@ export default function ProductPage() {
               "Shipping & Returns",
             ].map((section) => (
               <div key={section}>
-                <Button className=" !text-left !capitalize !font-medium !text-black hover:bg-none">
+                <Button className=" !text-left !text-xs md:!text-sm !capitalize !font-medium !text-black hover:bg-none">
                   {section}
                 </Button>
                 <Divider />

@@ -7,8 +7,7 @@ import { Button } from "@mui/material";
 import { FaShoppingCart, FaTrash } from "react-icons/fa";
 import { removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { addToCart } from "@/redux/slices/cartSlice";
-import { toast } from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function WishlistPage() {
   const items = useSelector((state) => state.wishlist?.wishlistData || []);
@@ -34,13 +33,11 @@ export default function WishlistPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {items.map((item) => (
             <div
               key={item._id}
-              className="relative group bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300"
-              onMouseEnter={() => {}}
-              onMouseLeave={() => {}}
+              className="relative bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300"
             >
               <Link
                 href={`/product/${item.slug?.current || ""}`}
@@ -67,21 +64,21 @@ export default function WishlistPage() {
                 </div>
               </Link>
 
-              {/* Action Buttons */}
-              <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              {/* Always-visible Action Buttons */}
+              <div className="flex justify-between items-center px-4 pb-4">
                 <button
                   onClick={(e) => handleAddToCart(e, item)}
-                  className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
-                  aria-label="Add to cart"
+                  className="flex items-center gap-1 text-xs text-black hover:text-white hover:bg-black border border-black px-3 py-1 rounded-full transition"
                 >
                   <FaShoppingCart />
+                  
                 </button>
                 <button
                   onClick={() => dispatch(removeFromWishlist({ _id: item._id }))}
-                  className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition text-red-500"
-                  aria-label="Remove from wishlist"
+                  className="flex items-center gap-1 text-xs text-red-500 hover:text-white hover:bg-red-500 border border-red-500 px-3 py-1 rounded-full transition"
                 >
                   <FaTrash />
+              
                 </button>
               </div>
             </div>
