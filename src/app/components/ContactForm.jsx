@@ -225,7 +225,7 @@ export default function ContactForm() {
           className="!px-4 !py-3 md:!text-xl !self-start !bg-black !text-white hover:scale-105 hover:shadow-md transition-transform  capitalize font-bold rounded-full text-sm"
         >
           {isLoading ? (
-            <CircularProgress size={20} className="text-black font-semibold" />
+             <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
           ) : (
             <Typography className="!text-sm !font-semibold ">Submit</Typography>
           )}

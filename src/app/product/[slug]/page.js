@@ -107,7 +107,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="p-10 flex justify-center items-center">
-        <CircularProgress />
+  <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
       </div>
     );
   }
@@ -159,7 +159,7 @@ export default function ProductPage() {
                   <div
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border rounded cursor-pointer ${
+                    className={`px-4 py-2 border text-xs md:text-sm rounded cursor-pointer ${
                       selectedSize === size
                         ? "bg-black text-white"
                         : "hover:bg-black hover:text-white"
@@ -219,7 +219,7 @@ export default function ProductPage() {
             <Button
               variant="contained"
               onClick={handleAddToCart}
-              className="md:!px-18 px-12 !py-3 !rounded-full  !text-xs md:!text-sm !bg-black !text-white hover:scale-105  !transition-transform !duration-300 !ease-in-out !capitalize"
+              className="md:!px-18 !px-12 !py-3 !rounded-full  !text-xs md:!text-sm !bg-black !text-white hover:scale-105  !transition-transform !duration-300 !ease-in-out !capitalize"
             >
               Add to Cart
             </Button>

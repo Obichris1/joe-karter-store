@@ -67,7 +67,7 @@ const HeroBanner = ({ banners }) => {
                
               <Link
                   href='/shop'
-                  className="bg-white text-black font-semibold px-6 py-3 w-32 rounded-full inline-block"
+                  className="bg-white text-black font-semibold md:text-base text-sm px-6 py-3 w-32  rounded-full inline-block"
                 >
                   Shop Now
                 </Link>

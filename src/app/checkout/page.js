@@ -155,7 +155,7 @@ export default function CheckoutPage() {
   if (isCartLoading) {
     return (
       <Box className="flex justify-center items-center min-h-[60vh]">
-        <CircularProgress color="#000" />
+    <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
       </Box>
     );
   }
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="flex flex-col md:w-[90%] mx-auto py-12 px-6 md:flex-row gap-36">
+    <div className="flex flex-col md:w-[90%] mx-auto py-12  md:flex-row gap-36">
       {/* Shipping Info */}
       <motion.div
         initial={{ x: -80, opacity: 0 }}
@@ -179,8 +179,8 @@ export default function CheckoutPage() {
         transition={{ duration: 0.6 }}
         className="w-full md:w-[50%]"
       >
-        <Paper elevation={2} sx={{ p: 4, borderRadius: 4 }}>
-          <Typography variant="h6" fontWeight="bold" className="!mb-6">
+        <Paper elevation={2} className="md:!p-8 !p-6 !rounded-xl">
+          <Typography variant="h6" fontWeight="bold" className="!mb-6 !text-base md:!text-xl">
             Shipping Information
           </Typography>
           <Box display="flex" flexDirection="column" gap={3}>
@@ -254,7 +254,7 @@ export default function CheckoutPage() {
               }}
               
             />
-            <Box display="flex" gap={2}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" >
               <TextField
                 fullWidth
                 required
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
                   },
                 }}
               />
-            </Box>
+            </div>
             <TextField
               fullWidth
               label="Promo Code (optional)"
@@ -331,8 +331,8 @@ export default function CheckoutPage() {
         transition={{ duration: 0.6 }}
         className="flex-1"
       >
-        <Paper elevation={2} sx={{ p: 4, borderRadius: 4 }}>
-          <Typography variant="h6" fontWeight="bold" className="!mb-6">
+        <Paper elevation={2} className="md:!p-8 !p-6 !rounded-xl">
+          <Typography variant="h6" fontWeight="bold" className="!mb-6 !text-base md:!text-xl">
             Order Summary
           </Typography>
           <Box className="space-y-12">
@@ -350,30 +350,22 @@ export default function CheckoutPage() {
               </Box>
             ))}
             <Divider className="!space-y-8 !mb-8 !mt-8" />
-            <Box className="flex justify-between text-lg font-semibold">
-              <span>Total:</span>
-              <span>₦{cartTotal.toLocaleString()}</span>
+            <Box className="flex justify-between  font-semibold">
+              <span className="text-base">Total:</span>
+              <span className="text-base font-bold">₦{cartTotal.toLocaleString()}</span>
             </Box>
             <Button
               variant="contained"
-              fullWidth
-              size="large"
+             
+              size=""
               onClick={handlePayment}
               disabled={!isPaystackReady || isProcessing}
-              sx={{
-                backgroundColor: isPaystackReady ? "#000" : "#999",
-                color: "#fff",
-                mt: 2,
-                "&:hover": {
-                  backgroundColor: isPaystackReady ? "#111" : "#999",
-                  scale: "-moz-initial"
-                },
-              }}
+              className="!bg-black hover:!scale-105 !transition !ease-in-out duration-300"
             >
               {isProcessing ? (
-                <CircularProgress size={24} sx={{ color: "#000" }} />
+                <CircularProgress size={20} sx={{ color: "#000" }} />
               ) : (
-                <Typography className="!text-xs md:!text-sm  ">Pay with pay stack</Typography>
+                <Typography className="!text-xs md:!text-base !font-bold  ">Pay with pay stack</Typography>
               )}
             </Button>
           </Box>

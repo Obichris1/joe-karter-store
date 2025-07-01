@@ -140,7 +140,7 @@ export default function ProductSections({ products }) {
                 <div className="relative z-10 bg-white px-4">
                   <button
                     onClick={() => handleLoadMore(key)}
-                    className="border px-6 py-2 rounded-full text-sm hover:bg-black hover:text-white transition"
+                    className="border px-6 py-2 rounded-full md:text-sm text-xs hover:bg-black hover:text-white transition"
                   >
                     Load More
                   </button>

@@ -35,16 +35,16 @@ export default function CartPage() {
   if (isCartLoading) {
     return (
       <Box className="flex justify-center items-center min-h-[60vh]">
-        <CircularProgress sx={{ color: "#000" }} />
+        <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
       </Box>
     );
   }
 
   return (
-    <div className="flex flex-col w-[90%] m-auto lg:flex-row p-6 gap-8">
+    <div className="flex flex-col w-[90%] m-auto lg:flex-row py-6  gap-8">
       {/* Cart Items */}
       <div className="flex-1">
-        <h2 className="text-2xl font-semibold mb-4">Purchase Summary</h2>
+        <h2 className="text-base md:text-xl  font-semibold mb-4">Purchase Summary</h2>
 
         {items.length === 0 ? (
           <p className="text-gray-600">Your cart is empty.</p>
@@ -114,7 +114,7 @@ export default function CartPage() {
 
       {/* Order Summary */}
       <div className="w-full lg:w-[500px] border rounded-xl mt-12 h-3/4 p-6">
-        <h3 className="text-xl font-semibold mb-4">Order Summary</h3>
+        <h3 className="text-base md:text-xl  font-semibold mb-6">Order Summary</h3>
         <div className="space-y-8">
           <div className="flex justify-between">
             <span className="text-sm">Subtotal</span>
@@ -141,14 +141,14 @@ export default function CartPage() {
             placeholder="Promo code"
             className="flex-1 p-2 rounded-lg bg-gray-100 focus:outline-none"
           />
-          <button className="bg-black text-white px-4 py-2 rounded-lg">
+          <button className="bg-black text-white px-4 py-2 rounded-lg hover:!scale-105 !transition !ease-in-out duration-300">
             Apply
           </button>
         </div>
 
         {/* Checkout */}
         <Link href="/checkout">
-          <Button className="!mt-8 !w-full !bg-black !text-white !py-3 !rounded-full !text-sm hover:scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
+          <Button className="!mt-8 !w-full !bg-black !text-white !py-3 !rounded-xl !text-sm hover:!scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
             Checkout
           </Button>
         </Link>
