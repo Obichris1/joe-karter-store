@@ -12,34 +12,32 @@ import {
   FormControlLabel,
   Typography,
   Box,
+  Chip,
   Divider,
   CircularProgress,
-  
-InputAdornment,
+  InputAdornment,
   Paper,
 } from "@mui/material";
 import {
   AiFillMail,
   AiOutlineUser,
-  AiFillCheckCircle,
-  AiOutlinePhone,
-  AiOutlineMail,
-  AiOutlineCheckCircle,
   AiFillPhone,
   AiFillHome,
-  AiFillCode,
   AiFillMoneyCollect,
 } from "react-icons/ai";
-
 import { motion } from "framer-motion";
 
 export default function CheckoutPage() {
   const [isPaystackReady, setPaystackReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [agreed, setAgreed] = useState(false);
+  const [promoTried, setPromoTried] = useState(false);
+
   const [form, setForm] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     address: "",
@@ -48,6 +46,9 @@ export default function CheckoutPage() {
     promo: "",
   });
 
+  const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [couponApplied, setCouponApplied] = useState(false);
+
   const cart = useSelector((state) => state.cart.productData);
   const router = useRouter();
 
@@ -55,6 +56,8 @@ export default function CheckoutPage() {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+  const deliveryFee = 500;
+  const total = cartTotal + deliveryFee - appliedDiscount;
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -74,24 +77,64 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handlePayment = async () => {
+  const handleApplyCoupon = async () => {
+    const code = form.promo.trim().toUpperCase();
+    setPromoTried(true);
+    if (!code) {
+      toast.error("Please enter a promo code");
+      setCouponApplied(false);
+      setAppliedDiscount(0);
+      return;
+    }
+
+    try {
+      setIsApplying(true);
+      const res = await fetch("/api/promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setCouponApplied(false);
+        setAppliedDiscount(0);
+        toast.error(data.message || "Invalid promo code");
+      } else {
+        setCouponApplied(true);
+        setAppliedDiscount(data.discount);
+        toast.success(`Promo applied: ₦${data.discount} off`);
+      }
+    } catch (err) {
+      toast.error("Something went wrong validating the promo");
+      setCouponApplied(false);
+      setAppliedDiscount(0);
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  const handlePayment = async (e) => {
+    if (e) e.preventDefault(); // prevent form default behavior
     if (!isPaystackReady || !window.PaystackPop) {
       toast.error("Payment system not ready. Please wait...");
       return;
     }
 
-    // Validate required fields
     const requiredFields = [
-      "name",
+      "firstName",
+      "lastName",
       "email",
       "phone",
       "address",
       "city",
       "state",
     ];
+
     for (const field of requiredFields) {
       if (!form[field]) {
-        toast.error(`Please complete your delivery information`);
+        toast.error("Please complete your delivery information");
         return;
       }
     }
@@ -107,7 +150,13 @@ export default function CheckoutPage() {
       const response = await fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form, cart, total: cartTotal }),
+        body: JSON.stringify({
+          form,
+          cart,
+          total,
+          discount: appliedDiscount,
+          promoCode: form.promo.trim().toUpperCase(),
+        }),
       });
 
       const result = await response.json();
@@ -121,14 +170,14 @@ export default function CheckoutPage() {
     const handler = window.PaystackPop.setup({
       key: paystackTestKey,
       email: form.email,
-      amount: cartTotal * 100,
+      amount: total * 100,
       currency: "NGN",
       metadata: {
         custom_fields: [
           {
             display_name: "Customer Name",
             variable_name: "customer_name",
-            value: form.name,
+            value: `${form.firstName} ${form.lastName}`,
           },
           {
             display_name: "Mobile Number",
@@ -151,11 +200,10 @@ export default function CheckoutPage() {
     handler.openIframe();
   };
 
-  // Handle loading or empty cart
   if (isCartLoading) {
     return (
       <Box className="flex justify-center items-center min-h-[60vh]">
-    <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
+        <CircularProgress size={25} sx={{ color: "#000" }} />
       </Box>
     );
   }
@@ -171,7 +219,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="flex flex-col md:w-[90%] mx-auto py-12  md:flex-row gap-36">
+    <div className="flex flex-col md:w-[90%] mx-auto py-12 px-6 md:px-0 md:flex-row gap-36">
       {/* Shipping Info */}
       <motion.div
         initial={{ x: -80, opacity: 0 }}
@@ -187,18 +235,31 @@ export default function CheckoutPage() {
             <TextField
               fullWidth
               required
-              label="Full Name"
-              name="name"
-              value={form.name}
+              label="First Name"
+              name="firstName"
+              value={form.firstName}
               onChange={handleChange}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AiOutlineUser />
-                    </InputAdornment>
-                  ),
-                },
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AiOutlineUser />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              required
+              label="Last Name"
+              name="lastName"
+              value={form.lastName}
+              onChange={handleChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AiOutlineUser />
+                  </InputAdornment>
+                ),
               }}
             />
             <TextField
@@ -206,118 +267,71 @@ export default function CheckoutPage() {
               required
               label="Email"
               name="email"
-              type="email"
               value={form.email}
               onChange={handleChange}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AiFillMail />
-                    </InputAdornment>
-                  ),
-                },
+              type="email"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AiFillMail />
+                  </InputAdornment>
+                ),
               }}
             />
             <TextField
               fullWidth
               required
-              label="Phone Number"
+              label="Phone"
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AiFillPhone />
-                    </InputAdornment>
-                  ),
-                },
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AiFillPhone />
+                  </InputAdornment>
+                ),
               }}
             />
             <TextField
               fullWidth
               required
-              label="Street Address"
+              label="Address"
               name="address"
               value={form.address}
               onChange={handleChange}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AiFillHome/>
-                    </InputAdornment>
-                  ),
-                },
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AiFillHome />
+                  </InputAdornment>
+                ),
               }}
-              
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4" >
-              <TextField
-                fullWidth
-                required
-                label="City"
-                name="city"
-                value={form.city}
-                onChange={handleChange}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AiFillHome/>
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-              <TextField
-                fullWidth
-                required
-                label="State"
-                name="state"
-                value={form.state}
-                onChange={handleChange}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AiFillHome/>
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-            </div>
             <TextField
               fullWidth
-              label="Promo Code (optional)"
-              name="promo"
-              value={form.promo}
+              required
+              label="City"
+              name="city"
+              value={form.city}
               onChange={handleChange}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AiFillMoneyCollect/>
-                    </InputAdornment>
-                  ),
-                },
-              }}
+            />
+            <TextField
+              fullWidth
+              required
+              label="State"
+              name="state"
+              value={form.state}
+              onChange={handleChange}
             />
             <FormControlLabel
-            className="p-0 !text-xs "
+              className="p-0 !text-xs"
               control={
                 <Checkbox
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
-                  color="#000"
-
-                  
                 />
               }
-            
               label="I agree to the Terms and Conditions"
             />
           </Box>
@@ -335,39 +349,104 @@ export default function CheckoutPage() {
           <Typography variant="h6" fontWeight="bold" className="!mb-6 !text-base md:!text-xl">
             Order Summary
           </Typography>
-          <Box className="space-y-12">
+          <Box className="space-y-8">
             {cart.map((item) => (
-              <Box
-                key={item._id}
-                className="flex justify-between border-b pb-2 text-sm text-gray-700"
-              >
-                <span className="font-semibold">
-                  {item.title} × {item.quantity}
-                </span>
+              <Box key={item._id} className="flex justify-between text-sm text-gray-700">
+                <span>{item.title} × {item.quantity}</span>
                 <span className="font-bold">
                   ₦{(item.price * item.quantity).toLocaleString()}
                 </span>
               </Box>
             ))}
-            <Divider className="!space-y-8 !mb-8 !mt-8" />
-            <Box className="flex justify-between  font-semibold">
-              <span className="text-base">Total:</span>
-              <span className="text-base font-bold">₦{cartTotal.toLocaleString()}</span>
+
+            <Divider className="!my-4" />
+
+            <Box className="flex justify-between text-sm">
+              <span>Subtotal</span>
+              <span>₦{cartTotal.toLocaleString()}</span>
             </Box>
-            <Button
-              variant="contained"
-             
-              size=""
-              onClick={handlePayment}
-              disabled={!isPaystackReady || isProcessing}
-              className="!bg-black hover:!scale-105 !transition !ease-in-out duration-300"
-            >
-              {isProcessing ? (
-                <CircularProgress size={20} sx={{ color: "#000" }} />
-              ) : (
-                <Typography className="!text-xs md:!text-base !font-bold  ">Pay with pay stack</Typography>
+            <Box className="flex justify-between text-sm">
+              <span>Delivery Fee</span>
+              <span>₦{deliveryFee.toLocaleString()}</span>
+            </Box>
+
+            <Box className="space-y-2">
+              <Typography className="!mb-2 !text-sm">Promo code</Typography>
+              <Box className="flex gap-2 items-center">
+                <TextField
+                  fullWidth
+                  name="promo"
+                  value={form.promo}
+                  onChange={handleChange}
+                  size="small"
+                  placeholder="Enter promo code"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AiFillMoneyCollect />
+                      </InputAdornment>
+                    ),
+                    sx: {
+                      fontSize: "1rem",
+                      "&::placeholder": { fontSize: "0.75rem" },
+                    },
+                  }}
+                  inputProps={{ style: { fontSize: "0.75rem" } }}
+                />
+                <Button
+                  variant="contained"
+                  onClick={handleApplyCoupon}
+                  disabled={isApplying}
+                  className="!bg-black hover:!scale-105 !capitalize !transition !ease-in-out duration-300"
+                >
+                  {isApplying ? "Checking..." : "Apply"}
+                </Button>
+              </Box>
+              {promoTried && (
+                <Chip
+                  label={
+                    couponApplied
+                      ? `Promo Applied: ₦${appliedDiscount.toLocaleString()} off`
+                      : "Invalid Promo Code"
+                  }
+                  color={couponApplied ? "success" : "error"}
+                  variant="outlined"
+                />
               )}
-            </Button>
+            </Box>
+
+            <Box className="flex justify-between text-sm">
+              <span>Discount</span>
+              <span>-₦{appliedDiscount.toLocaleString()}</span>
+            </Box>
+            <Divider className="!my-4" />
+            <Box className="flex justify-between font-bold text-base">
+              <span>Total</span>
+              <span>₦{total.toLocaleString()}</span>
+            </Box>
+
+            <form
+  onSubmit={(e) => {
+    e.preventDefault();
+    handlePayment();
+  }}
+>
+  <Button
+    type="submit"
+    variant="contained"
+    disabled={!isPaystackReady || isProcessing}
+    className="!bg-black w-full hover:!scale-105 !py-2 !transition capitalize !ease-in-out duration-300 !mt-6"
+  >
+    {isProcessing ? (
+      <CircularProgress size={25} sx={{ color: "#fff" }} />
+    ) : (
+      <Typography className="!text-xs md:!text-base capitalize">
+        Pay with Paystack
+      </Typography>
+    )}
+  </Button>
+</form>
+
           </Box>
         </Paper>
       </motion.div>

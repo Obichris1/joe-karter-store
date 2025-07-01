@@ -48,7 +48,7 @@ const Header = () => {
             href="/athleisure"
             className={`px-3 py-4 rounded-xl transition-colors duration-200
               hover:text-black hover:bg-gray-50
-              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold' : ''}`}
+              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold -translate-y-2' : ''}`}
           >
             Shop Nobody Dies
           </Link>
@@ -104,7 +104,7 @@ const Header = () => {
 
           {/* Hamburger toggle (mobile only) */}
           <button onClick={() => setMobileOpen(!mobileOpen)} className="block md:hidden ml-2">
-            {mobileOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+            {mobileOpen ? <FaTimes size={20}/> : <FaBars size={20}/>}
           </button>
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Button, CircularProgress, Box } from "@mui/material";
 
 export default function CartPage() {
   const items = useSelector((state) => state.cart.productData);
+  
   const dispatch = useDispatch();
 
   const [isCartLoading, setIsCartLoading] = useState(true);
@@ -35,7 +36,7 @@ export default function CartPage() {
   if (isCartLoading) {
     return (
       <Box className="flex justify-center items-center min-h-[60vh]">
-        <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
+        <CircularProgress size={25}sx={{ color: "#000", fontSize:"2px" }} />
       </Box>
     );
   }
@@ -116,18 +117,16 @@ export default function CartPage() {
       <div className="w-full lg:w-[500px] border rounded-xl mt-12 h-3/4 p-6">
         <h3 className="text-base md:text-xl  font-semibold mb-6">Order Summary</h3>
         <div className="space-y-8">
-          <div className="flex justify-between">
-            <span className="text-sm">Subtotal</span>
-            <span className="text-sm">₦{subtotal.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Discount</span>
-            <span className="text-sm">₦{discount.toLocaleString()}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">Delivery Fee</span>
-            <span className="text-sm">₦{deliveryFee.toLocaleString()}</span>
-          </div>
+        {items.map((item) => (
+      <Box key={item._id} className="flex justify-between text-sm text-gray-700">
+        <span>{item.title} × {item.quantity}</span>
+        <span className="font-bold">
+          ₦{(item.price * item.quantity).toLocaleString()}
+        </span>
+      </Box>
+    ))}
+      
+       
           <hr />
           <div className="flex justify-between font-bold text-base">
             <span>Total</span>
@@ -135,20 +134,11 @@ export default function CartPage() {
           </div>
         </div>
 
-        {/* Coupon input */}
-        <div className="flex items-center mt-4 gap-2">
-          <input
-            placeholder="Promo code"
-            className="flex-1 p-2 rounded-lg bg-gray-100 focus:outline-none"
-          />
-          <button className="bg-black text-white px-4 py-2 rounded-lg hover:!scale-105 !transition !ease-in-out duration-300">
-            Apply
-          </button>
-        </div>
+      
 
         {/* Checkout */}
         <Link href="/checkout">
-          <Button className="!mt-8 !w-full !bg-black !text-white !py-3 !rounded-xl !text-sm hover:!scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
+          <Button className="!mt-8 !w-full !bg-black !Capitalize !text-white !py-3 !rounded-xl !text-sm hover:!scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
             Checkout
           </Button>
         </Link>

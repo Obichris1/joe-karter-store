@@ -48,15 +48,15 @@ export default function HeroCategories() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
 
                 <div className="absolute bottom-0 z-20 p-6 text-white w-full flex flex-col md:flex-row gap-8 md:items-center md:justify-between space-y-4 md:space-y-0">
-                  <Typography className="!text-xs md:!text-sm !max-w-sm !leading-6">
+                  <Typography className="!text-xs md:!text-base !max-w-sm !font-bold  !leading-6 md:!leading-7" >
                     {cat.description}
                   </Typography>
                   <Button
                     variant="contained"
-                    className="!flex !w-1/2 !px-4 !py-3 !rounded-full !text-xs !font-bold !bg-white !text-black hover:!bg-black hover:!text-white !transition"
+                    className="!flex !w-1/2 !px-4 !py-3 !rounded-full !text-xs !font-bold !bg-white  !text-black hover:!bg-black hover:!text-white !transition"
                   >
                     {cat.title}
                   </Button>

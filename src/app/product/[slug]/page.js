@@ -107,7 +107,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="p-10 flex justify-center items-center">
-  <CircularProgress size={20} sx={{ color: "#000", fontSize:"2px" }} />
+  <CircularProgress size={25}sx={{ color: "#000", fontSize:"2px" }} />
       </div>
     );
   }

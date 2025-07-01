@@ -1,10 +1,11 @@
-// src/app/api/order/route.js
 import nodemailer from 'nodemailer';
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { form, cart, total } = body;
+    const { form, cart, total, discount, promoCode } = body;
+
+    const customerName = `${form.firstName} ${form.lastName}`;
 
     const cartItems = cart
       .map(
@@ -16,12 +17,15 @@ export async function POST(req) {
       .join('');
 
     const htmlContent = `
-      <h2>New Order from ${form.name}</h2>
+      <h2>New Order from ${customerName}</h2>
       <p><strong>Email:</strong> ${form.email}</p>
       <p><strong>Phone:</strong> ${form.phone}</p>
       <p><strong>Address:</strong> ${form.address}, ${form.city}, ${form.state}</p>
+      <hr />
       <h3>Order Summary:</h3>
       <ul>${cartItems}</ul>
+      <p><strong>Discount:</strong> ₦${discount?.toLocaleString?.() || 0}</p>
+      <p><strong>Promo Code:</strong> ${promoCode || "None"}</p>
       <p><strong>Total:</strong> ₦${total.toLocaleString()}</p>
     `;
 
@@ -38,7 +42,7 @@ export async function POST(req) {
     await transporter.sendMail({
       from: `"Joe Karter Store" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
-      subject: `🛒 New Order from ${form.name}`,
+      subject: `🛒 New Order from ${customerName}`,
       html: htmlContent,
     });
 
