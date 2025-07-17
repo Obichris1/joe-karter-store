@@ -28,7 +28,6 @@ export default function NewsletterModal() {
         setShow(true);
         localStorage.setItem("newsletterModalShown", "true");
       }, 100);
-
       return () => clearTimeout(timeout);
     }
   }, []);
@@ -41,28 +40,30 @@ export default function NewsletterModal() {
       maxWidth="xs"
       fullWidth
       PaperProps={{
-        className: "!rounded-2xl",
+        className: "!rounded-2xl relative overflow-visible",
         style: {
           backgroundColor: "black",
-          padding: isMobile ? "1.5rem" : "2rem",
+          padding: isMobile ? "1.5rem 1rem" : "2rem",
         },
       }}
     >
-      <DialogTitle
-        className="!text-white !text-center !p-0"
-        sx={{ position: "relative" }}
+      <IconButton
+        onClick={() => setShow(false)}
+        sx={{
+          color: "white",
+          position: "absolute",
+          top: 8,
+          right: 8,
+          zIndex: 10,
+        }}
+        aria-label="close"
+        size="small"
       >
-        <IconButton
-          onClick={() => setShow(false)}
-          className="!text-white !absolute right-2 top-2"
-          size="small"
-        >
-          <CloseIcon fontSize="small" />
-        </IconButton>
-      </DialogTitle>
+        <CloseIcon fontSize="small" />
+      </IconButton>
 
-      <DialogContent className="flex flex-col items-center text-white w-full !p-0">
-        <div className="flex justify-center pb-3">
+      <DialogContent className="flex flex-col items-center text-white text-sm sm:text-base p-0 pt-6">
+        <div className="flex justify-center pb-4">
           <Image src="/Jk.png" alt="Joe Karter Logo" width={50} height={50} />
         </div>
 
@@ -70,18 +71,18 @@ export default function NewsletterModal() {
           SUBSCRIBE TO OUR NEWSLETTER
         </h2>
 
-        <p className="mb-6 text-sm sm:text-sm leading-6 text-center ">
+        <p className="mb-6 text-xs sm:text-sm leading-6 text-center max-w-[90%]">
           Discover fashion that speaks your vibe. Curated trends, timeless
           pieces, and effortless style—because you deserve to stand out.
         </p>
 
         <TextField
           type="email"
-          placeholder="Please enter your email"
+          placeholder="Enter your email"
           fullWidth
           InputProps={{
             className:
-              "bg-white !text-black !px-4 !text-sm !rounded-full h-11 sm:h-12 w-full",
+              "bg-white !text-black !px-4 !text-xs sm:!text-sm !rounded-full h-10 sm:h-11 w-full",
           }}
           variant="outlined"
           className="!mb-4"
@@ -90,7 +91,7 @@ export default function NewsletterModal() {
         <DialogActions className="!justify-center w-full">
           <Button
             variant="contained"
-            className="!bg-white !text-black !font-bold !rounded-full !px-6 !py-3 !text-xs sm:!text-sm"
+            className="!bg-white !text-black !font-semibold !rounded-full !px-6 !py-2 !text-xs sm:!text-sm w-full"
           >
             SUBSCRIBE
           </Button>
