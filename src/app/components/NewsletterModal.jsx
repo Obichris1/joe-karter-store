@@ -21,8 +21,16 @@ export default function NewsletterModal() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    const timeout = setTimeout(() => setShow(true), 100);
-    return () => clearTimeout(timeout);
+    const hasSeenModal = localStorage.getItem("newsletterModalShown");
+
+    if (!hasSeenModal) {
+      const timeout = setTimeout(() => {
+        setShow(true);
+        localStorage.setItem("newsletterModalShown", "true");
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    }
   }, []);
 
   if (!show) return null;
