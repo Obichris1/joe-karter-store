@@ -10,6 +10,10 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
   Typography,
   Box,
   Chip,
@@ -44,19 +48,32 @@ export default function CheckoutPage() {
     city: "",
     state: "",
     promo: "",
+    deliveryLocation: "",
   });
 
   const [appliedDiscount, setAppliedDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
 
   const cart = useSelector((state) => state.cart.productData);
+  console.log(cart);
+  
   const router = useRouter();
+
+  const deliveryFees = {
+    mainland: 500,
+    island: 1000,
+    ikorodu: 800,
+    epe: 1500,
+    badagry: 1200,
+  };
+
+  const deliveryFee = deliveryFees[form.deliveryLocation] || 0;
 
   const cartTotal = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const deliveryFee = 500;
+
   const total = cartTotal + deliveryFee - appliedDiscount;
 
   useEffect(() => {
@@ -116,7 +133,7 @@ export default function CheckoutPage() {
   };
 
   const handlePayment = async (e) => {
-    if (e) e.preventDefault(); // prevent form default behavior
+    if (e) e.preventDefault();
     if (!isPaystackReady || !window.PaystackPop) {
       toast.error("Payment system not ready. Please wait...");
       return;
@@ -199,6 +216,7 @@ export default function CheckoutPage() {
 
     handler.openIframe();
   };
+
 
   if (isCartLoading) {
     return (
@@ -293,6 +311,8 @@ export default function CheckoutPage() {
                 ),
               }}
             />
+                     <Box display="flex" flexDirection="column" gap={3}>
+            {/* Previous fields */}
             <TextField
               fullWidth
               required
@@ -308,6 +328,53 @@ export default function CheckoutPage() {
                 ),
               }}
             />
+
+            {/* Delivery Area Selection */}
+            <FormControl component="fieldset">
+  <FormLabel component="legend" className="!text-xs md:!text-base">
+    Select your delivery location
+  </FormLabel>
+  <RadioGroup
+    name="deliveryLocation"
+    value={form.deliveryLocation}
+    onChange={handleChange}
+    className="!grid !grid-cols-1 md:!grid-cols-2"
+  >
+    <FormControlLabel
+      value="mainland"
+      control={<Radio size="small" />}
+      label="Lagos Mainland Axis (₦500)"
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
+    />
+    <FormControlLabel
+      value="island"
+      control={<Radio size="small" />}
+      label="Island Axis (₦1000)"
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
+    />
+    <FormControlLabel
+      value="ikorodu"
+      control={<Radio size="small" />}
+      label="Ikorodu (₦800)"
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
+    />
+    <FormControlLabel
+      value="epe"
+      control={<Radio size="small" />}
+      label="Epe (₦1500)"
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
+    />
+    <FormControlLabel
+      value="badagry"
+      control={<Radio size="small" />}
+      label="Badagry (₦1200)"
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
+    />
+  </RadioGroup>
+</FormControl>
+
+            {/* Other fields... */}
+          </Box>
             <TextField
               fullWidth
               required
@@ -380,17 +447,7 @@ export default function CheckoutPage() {
                   onChange={handleChange}
                   size="small"
                   placeholder="Enter promo code"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AiFillMoneyCollect />
-                      </InputAdornment>
-                    ),
-                    sx: {
-                      fontSize: "1rem",
-                      "&::placeholder": { fontSize: "0.75rem" },
-                    },
-                  }}
+                
                   inputProps={{ style: { fontSize: "0.75rem" } }}
                 />
                 <Button

@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { FaHeart, FaShoppingCart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaRegHeart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishListSlice";
@@ -70,38 +70,42 @@ export default function ProductSections({ products }) {
               <h2 className="text-lg md:text-2xl font-semibold">{label}</h2>
               <Link
                 href="/shop"
-                className="border px-5 py-2 rounded-full text-xs md:text-sm  hover:bg-black hover:text-white transition"
+                className="border px-5 py-2 rounded-full text-xs md:text-sm hover:bg-black hover:text-white transition"
               >
                 Shop Now
               </Link>
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-5 md:gap-6 gap-4 ">
+            <div className="grid grid-cols-2 md:grid-cols-5 md:gap-6 gap-4">
               {sectionProducts.slice(0, visibleCount).map((product) => (
                 <Link
                   key={product._id}
                   href={`/product/${product.slug.current}`}
                   className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block"
                 >
-                  <div className="aspect-square relative rounded-t-2xl overflow-hidden">
-                    <Image
-                      src={
-                        product.images?.[0]?.asset?.url || "/placeholder.jpg"
-                      }
-                      alt={product.title}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="aspect-square relative rounded-t-2xl overflow-hidden group">
+                    {product.images?.length > 1 ? (
+                      <ImageSlider images={product.images} />
+                    ) : (
+                      <Image
+                        src={
+                          product.images?.[0]?.asset?.url || "/placeholder.jpg"
+                        }
+                        alt={product.title}
+                        fill
+                        className="object-cover transition duration-300"
+                      />
+                    )}
                   </div>
-                  <div className="p-3  flex flex-col">
+
+                  <div className="p-3 flex flex-col">
                     <h3 className="font-semibold text-sm">{product.title}</h3>
                     <p className="text-xs text-gray-500">{product.category}</p>
                     <p className="font-bold text-sm md:text-base self-end">
                       ₦{Number(product.price).toLocaleString()}
                     </p>
 
-                    {/* Buttons - Always visible */}
                     <div className="flex justify-between items-center mt-2">
                       <button
                         onClick={(e) => handleWishlistToggle(e, product)}
@@ -151,6 +155,58 @@ export default function ProductSections({ products }) {
         );
       })}
       <Toaster />
+    </div>
+  );
+}
+
+function ImageSlider({ images }) {
+  const [index, setIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 10000);
+    return () => clearInterval(intervalRef.current);
+  }, [images]);
+
+  const prevImage = (e) => {
+    e.preventDefault();
+    setIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const nextImage = (e) => {
+    e.preventDefault();
+    setIndex((prev) => (prev + 1) % images.length);
+  };
+
+  return (
+    <div className="relative w-full h-full">
+      <Image
+        src={images[index]?.asset?.url || "/placeholder.jpg"}
+        alt="Product Image"
+        fill
+        className="object-cover transition duration-500"
+      />
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prevImage}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
+            aria-label="Previous Image"
+          >
+            <FaChevronLeft size={14} />
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
+            aria-label="Next Image"
+          >
+            <FaChevronRight size={14} />
+          </button>
+        </>
+      )}
     </div>
   );
 }

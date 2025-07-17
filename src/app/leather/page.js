@@ -24,14 +24,27 @@ const LeatherProducts = async () => {
 
 
 export const getData = async () => {
-    // const query = '*[_type == "product"]';
-    // const products = await client.fetch(query);
-    const bannerQuery = `*[_type == "banner" && category == "leather"]{ title, subTitle, image, ctaText, ctaLink }`;
-  
-    const banners= await client.fetch(bannerQuery);
-  
-    return { banners };
-  };
+  const bannerQuery = `*[_type == "banner" && category == "leather"]{
+    _id,
+    title,
+    subTitle,
+    image,
+    video {
+      asset->{
+        _id,
+        url,
+        _ref
+      }
+    },
+    ctaText,
+    ctaLink
+  }`;
+
+  const banners = await client.fetch(bannerQuery);
+
+  return { banners };
+};
+
 
   const fetchProducts = async () => {
     const query = `*[_type == "product" && category == "leather"]{

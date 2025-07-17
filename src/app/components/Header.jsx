@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white">
-      <div className="px-6 py-3 flex md:w-[95%] w-full  m-auto justify-between items-center bg-white">
+      <div className="px-6 py-2 flex md:w-[95%] w-full  m-auto justify-between items-center bg-white">
         {/* Logo (visible on all screens) */}
         <Link href="/" className="text-xl font-bold text-black">
           Joe Karter

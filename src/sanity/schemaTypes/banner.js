@@ -27,7 +27,16 @@ export default {
         options: {
           hotspot: true,
         },
-        validation: Rule => Rule.required()
+        // validation: Rule => Rule.required()
+      },
+
+      {
+        name: 'video',
+        title: 'Banner Video',
+        type: 'file',
+        options: {
+          accept: 'video/*', // Accept only video files
+        }
       },
       {
         name: 'category',

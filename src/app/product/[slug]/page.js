@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { FaMinus, FaPlus, FaRegHeart,FaHeart } from "react-icons/fa";
+import { FaMinus, FaPlus, FaRegHeart, FaHeart } from "react-icons/fa";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
@@ -26,6 +26,9 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [useCustomMeasurement, setUseCustomMeasurement] = useState(false);
+  const [customMeasurement, setCustomMeasurement] = useState("");
+  const [isSliding, setIsSliding] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -64,11 +67,6 @@ export default function ProductPage() {
   }, [slug]);
 
   const handleAddToCart = () => {
-    // if (!selectedSize) {
-    //   toast.error("Please select a size");
-    //   return;
-    // }
-
     dispatch(
       addToCart({
         _id: product._id,
@@ -77,7 +75,7 @@ export default function ProductPage() {
         price: product.price,
         image: product.images[0]?.asset.url,
         quantity,
-        size: selectedSize,
+        size: useCustomMeasurement ? customMeasurement : selectedSize,
         color: selectedColor,
       })
     );
@@ -104,10 +102,29 @@ export default function ProductPage() {
     }
   };
 
+  const handleNextImage = () => {
+    setIsSliding(true);
+    setTimeout(() => {
+      setSelectedImage((prev) => (prev + 1) % product.images.length);
+      setIsSliding(false);
+    }, 300);
+  };
+
+  const handlePrevImage = () => {
+    setIsSliding(true);
+    setTimeout(() => {
+      setSelectedImage((prev) =>
+        prev === 0 ? product.images.length - 1 : prev - 1
+      );
+      setIsSliding(false);
+    }, 300);
+  };
+
+
   if (!product) {
     return (
       <div className="p-10 flex justify-center items-center">
-  <CircularProgress size={25}sx={{ color: "#000", fontSize:"2px" }} />
+        <CircularProgress size={25} sx={{ color: "#000", fontSize: "2px" }} />
       </div>
     );
   }
@@ -116,29 +133,30 @@ export default function ProductPage() {
     <div>
       <div className="max-w-7xl mx-auto w-[90%] py-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-40">
         {/* Images */}
-        <div className="">
-          <div className="relative aspect-auto  rounded-xl overflow-hidden">
+        <div className="relative">
+          <div className="relative aspect-auto rounded-xl overflow-hidden">
             <Image
               src={product.images[selectedImage]?.asset.url}
               alt={product.title}
               width={800}
               height={800}
-              className="object-cover h-[90%]"
-            />
-          </div>
-          {/* <div className="flex gap-2">
-          {product.images.map((img, i) => (
-            <div
-              key={i}
-              onClick={() => setSelectedImage(i)}
-              className={`w-20 h-20 relative rounded-md overflow-hidden border cursor-pointer ${
-                selectedImage === i ? 'border-black' : 'border-gray-200'
+              className={`object-cover h-[90%] transition-transform duration-300 ease-in-out ${
+                isSliding ? "scale-95 opacity-80" : "scale-100 opacity-100"
               }`}
+            />
+            <button
+              onClick={handlePrevImage}
+              className="absolute top-1/2 left-2 bg-white/70 hover:bg-white rounded-full p-1 z-10"
             >
-              <Image src={img.asset.url} alt={`thumb-${i}`} fill className="object-cover" />
-            </div>
-          ))}
-        </div> */}
+              ◀
+            </button>
+            <button
+              onClick={handleNextImage}
+              className="absolute top-1/2 right-2 bg-white/70 hover:bg-white rounded-full p-1 z-10"
+            >
+              ▶
+            </button>
+          </div>
         </div>
 
         {/* Info */}
@@ -154,21 +172,45 @@ export default function ProductPage() {
           {product.sizes && (
             <div>
               <h3 className="font-semibold mb-1">Size</h3>
-              <div className="flex gap-2 flex-wrap">
-                {product.sizes.map((size) => (
-                  <div
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border text-xs md:text-sm rounded cursor-pointer ${
-                      selectedSize === size
-                        ? "bg-black text-white"
-                        : "hover:bg-black hover:text-white"
-                    }`}
-                  >
-                    {size}
-                  </div>
-                ))}
-              </div>
+
+              {!useCustomMeasurement && (
+                <div className="flex gap-2 flex-wrap mb-3">
+                  {product.sizes.map((size) => (
+                    <div
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-4 py-2 border text-xs md:text-sm rounded cursor-pointer ${
+                        selectedSize === size
+                          ? "bg-black text-white"
+                          : "hover:bg-black hover:text-white"
+                      }`}
+                    >
+                      {size}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <Button
+                onClick={() => setUseCustomMeasurement((prev) => !prev)}
+                className="!text-xs !capitalize !text-black !underline !font-normal !p-0"
+              >
+                {useCustomMeasurement
+                  ? "Select from standard sizes"
+                  : "Use your own measurement"}
+              </Button>
+
+              {useCustomMeasurement && (
+                <div className="mt-3">
+                  <input
+                    type="text"
+                    placeholder="Enter your measurement (e.g. Chest: 38in, Length: 28in)"
+                    value={customMeasurement}
+                    onChange={(e) => setCustomMeasurement(e.target.value)}
+                    className="w-full border p-2 rounded text-xs"
+                  />
+                </div>
+              )}
             </div>
           )}
 

@@ -7,6 +7,8 @@ export async function POST(req) {
 
     const customerName = `${form.firstName} ${form.lastName}`;
 
+    console.log("cart issss", cart)
+
     const cartItems = cart
       .map(
         (item) =>
@@ -20,7 +22,7 @@ export async function POST(req) {
       <h2>New Order from ${customerName}</h2>
       <p><strong>Email:</strong> ${form.email}</p>
       <p><strong>Phone:</strong> ${form.phone}</p>
-      <p><strong>Address:</strong> ${form.address}, ${form.city}, ${form.state}</p>
+      <p><strong>Address:</strong> ${form.address}, ${form.city}, ${form.state},${form.deliveryLocation}</p>
       <hr />
       <h3>Order Summary:</h3>
       <ul>${cartItems}</ul>
