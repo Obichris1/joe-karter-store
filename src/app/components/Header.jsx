@@ -192,6 +192,15 @@ const Header = () => {
         <span> My Wishlist</span>
       </Link>
 
+      <Link
+        href="/contact"
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 text-sm mb-10 text-gray-80 font-bold"
+      >
+    
+        <span>Contact Us</span>
+      </Link>
+
   
     </motion.div>
   )}

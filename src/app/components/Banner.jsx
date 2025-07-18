@@ -70,7 +70,7 @@ const HeroBanner = ({ banners }) => {
             </div>
           )}
 
-          <div className="absolute inset-0 bg-black/60 flex items-end px-10 lg:px-20">
+          <div className="absolute inset-0 bg-black/60 flex items-end px-6 lg:px-20">
             <div className="text-white max-w-3xl mb-20">
               <div className="flex flex-col gap-8">
                 <h1 className="text-2xl md:text-3xl font-bold">
