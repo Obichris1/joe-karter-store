@@ -145,7 +145,7 @@ export default function CartPage() {
         </div>
 
         <Link href="/checkout">
-          <Button className="!mt-8 !w-full !bg-black !text-white !py-3 !rounded-xl !text-sm hover:!scale-105 !transition-transform !duration-300 !ease-in-out">
+          <Button className="!mt-8 !w-full !bg-black !text-white !capitalize !py-3 !rounded-xl !text-sm  hover:!scale-105 !transition-transform !duration-300 !ease-in-out">
             Checkout
           </Button>
         </Link>

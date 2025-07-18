@@ -39,14 +39,14 @@ const Footer = () => {
 
       {/* Footer Links */}
       <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12 px-6 md:px-20 py-10 text-sm justify-center  text-black">
-        <div className="flex flex-col items-center text-xs md:text-base  gap-3">
+        <div className="flex flex-col items-center text-xs md:text-sm  gap-3">
           <a href="#">Home</a>
           <a href="#">Who we are</a>
           <a href="#">Why us</a>
           <a href="/contact">Contact Us</a>
         </div>
 
-        <div className="flex flex-col items-center text-xs md:text-base  gap-3">
+        <div className="flex flex-col items-center text-xs md:text-sm  gap-3">
           <a href="#">Linkedin</a>
           <a href="#">Twitter</a>
           <a href="#">Instagram</a>

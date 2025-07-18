@@ -31,11 +31,11 @@ const HeroBanner = ({ banners }) => {
     return () => clearInterval(intervalRef.current);
   }, [banners]);
 
-  if (!banners || banners.length === 0) return null;
+  if (!banners || banners?.length === 0) return null;
 
   const banner = banners[current];
-  const hasVideo = !!banner.video?.asset?.url;
-  const hasImage = !!banner.image;
+  const hasVideo = !!banner?.video?.asset?.url;
+  const hasImage = !!banner?.image;
 
   return (
     <div className="relative w-full h-[90vh] overflow-hidden">
@@ -55,13 +55,13 @@ const HeroBanner = ({ banners }) => {
               loop
               playsInline
               className="w-full h-full object-cover "
-              src={banner.video.asset.url}
+              src={banner?.video?.asset?.url}
             />
           ) : hasImage ? (
             <div
               className="w-full h-full bg-center bg-cover"
               style={{
-                backgroundImage: `url(${urlFor(banner.image).width(1600).url()})`,
+                backgroundImage: `url(${urlFor(banner?.image).width(1600).url()})`,
               }}
             />
           ) : (
@@ -74,18 +74,18 @@ const HeroBanner = ({ banners }) => {
             <div className="text-white max-w-3xl mb-20">
               <div className="flex flex-col gap-8">
                 <h1 className="text-2xl md:text-3xl font-bold">
-                  {banner.title}
+                  {banner?.title}
                 </h1>
 
                 <Typography className="!text-base text-white md:!text-xl">
-                  {banner.subTitle}
+                  {banner?.subTitle}
                 </Typography>
 
                 <Link
                   href="/shop"
                   className="bg-white text-black font-semibold md:text-base text-sm px-6 py-3 w-32 rounded-full inline-block"
                 >
-                  {banner.ctaText || "Shop Now"}
+                  {banner?.ctaText || "Shop Now"}
                 </Link>
               </div>
             </div>

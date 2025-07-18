@@ -133,10 +133,30 @@ const Header = () => {
           <MdSearch className="text-2xl text-gray-600" />
         </button>
       </form>
+
+      <Link
+        href="/"
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 text-sm mb-10 text-gray-800 font-bold"
+      >
+      
+        <span> Home</span>
+      </Link>
+
+
+      <Link
+        href="/"
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 text-sm mb-10 text-gray-80 font-bold"
+      >
+    
+        <span> About Us</span>
+      </Link>
+
       {/* SHOP Dropdown */}
       <div
         onClick={() => setShopOpen(!shopOpen)}
-        className="flex items-center cursor-pointer gap-3 text-sm font-medium text-gray-800"
+        className="flex items-center cursor-pointer gap-3 text-sm text-gray-800 font-bold"
       >
         <span>Shop</span>
         <FaChevronDown className={`transition-transform duration-200 ${shopOpen ? 'rotate-180' : ''}`} />
@@ -166,7 +186,7 @@ const Header = () => {
       <Link
         href="/wishlist"
         onClick={() => setMobileOpen(false)}
-        className="flex items-center gap-3 text-sm mb-10 text-gray-800"
+        className="flex items-center gap-3 text-sm mb-10 text-gray-800 font-bold"
       >
         <FaHeart className="text-red-500" />
         <span> My Wishlist</span>
