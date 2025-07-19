@@ -105,7 +105,7 @@ const ShopPage = () => {
     .slice(0, visibleCount);
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <div className="!w-[95%] !m-auto px-6 py-8" >
       <Box mb={4}>
         <Typography className="!text-xl md:!text-2xl !mb-4" fontWeight="bold" gutterBottom>
           Shop All Products
@@ -121,7 +121,7 @@ const ShopPage = () => {
           justifyContent="space-between"
         >
           <Box flex={1} width="100%">
-            <InputLabel id="tag-select-label" className="!font-bold !text-sm md:!text-base !mb-1">Filter by Tag</InputLabel>
+            <InputLabel id="tag-select-label" className="!font-bold !text-sm md:!text-base !mb-1">Filter by categories</InputLabel>
             <Select
               fullWidth
               labelId="tag-select-label"
@@ -139,11 +139,11 @@ const ShopPage = () => {
           </Box>
 
           <Box flex={1} width="100%">
-            <InputLabel htmlFor="search" className="!font-bold !text-sm md:!text-base !mb-1">Search Products</InputLabel>
+            <InputLabel htmlFor="search" className="!font-bold !text-sm md:!text-base !mb-1">Search products</InputLabel>
             <TextField
               id="search"
               fullWidth
-              placeholder="Search by title or category"
+              placeholder="Enter a product name"
               value={searchQuery}
               className="!text-sm md:!text-base"
               onChange={handleSearchChange}
@@ -165,19 +165,26 @@ const ShopPage = () => {
                 className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block"
               >
                 <div className="aspect-square relative rounded-t-2xl overflow-hidden group">
-                  <Image
-                    src={product.images?.[0]?.asset?.url || "/placeholder.jpg"}
-                    alt={product.title}
-                    fill
-                    className="object-cover transition duration-300"
-                  />
-                </div>
+                    {product.images?.length > 1 ? (
+                      <ImageSlider images={product.images} />
+                    ) : (
+                      <Image
+                        src={
+                          product.images?.[0]?.asset?.url || "/placeholder.jpg"
+                        }
+                        alt={product.title}
+                        fill
+                        className="object-cover transition duration-300"
+                      />
+                    )}
+                  </div>
+
 
                 <div className="p-3 flex flex-col">
                   <h3 className="font-semibold text-sm">{product.title}</h3>
                   <p className="text-xs text-gray-500">{product.category}</p>
                   <p className="font-bold text-sm md:text-base self-end">
-                    ₦{typeof product.price === "number" ? product.price.toLocaleString() : "N/A"}
+                    ₦{typeof product.price === "number" ? product.price.toLocaleString() : "0"}
                   </p>
 
                   <div className="flex justify-between items-center mt-2">
@@ -216,8 +223,8 @@ const ShopPage = () => {
       }).length && (
         <Box mt={6} textAlign="center">
           <Button
-            variant="contained"
-            className="!bg-black !text-white !text-sm md:!text-base !capitalize !rounded-2xl"
+            variant="outlined"
+            className="!border !px-6 !py-2 !rounded-full md:!text-sm !text-xs !text-black !border-black hover:!bg-black hover:!text-white !capitalize !transition"
             onClick={handleLoadMore}
           >
             Load More
@@ -225,8 +232,65 @@ const ShopPage = () => {
         </Box>
       )}
       <Toaster />
-    </Container>
+    </div>
   );
 };
 
+
+
 export default ShopPage;
+
+
+
+function ImageSlider({ images }) {
+    const [index, setIndex] = useState(0);
+    const intervalRef = useRef(null);
+  
+    useEffect(() => {
+      intervalRef.current = setInterval(() => {
+        setIndex((prev) => (prev + 1) % images.length);
+      }, 10000);
+      return () => clearInterval(intervalRef.current);
+    }, [images]);
+  
+    const prevImage = (e) => {
+      e.preventDefault();
+      setIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+  
+    const nextImage = (e) => {
+      e.preventDefault();
+      setIndex((prev) => (prev + 1) % images.length);
+    };
+  
+    return (
+      <div className="relative w-full h-full">
+        <Image
+          src={images[index]?.asset?.url || "/placeholder.jpg"}
+          alt="Product Image"
+          fill
+          className="object-cover transition duration-500"
+        />
+  
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
+              aria-label="Previous Image"
+            >
+              <FaChevronLeft size={14} />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
+              aria-label="Next Image"
+            >
+              <FaChevronRight size={14} />
+            </button>
+          </>
+        )}
+      </div>
+    );
+  }
+
