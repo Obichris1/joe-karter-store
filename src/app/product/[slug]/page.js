@@ -204,7 +204,7 @@ export default function ProductPage() {
                 <div className="mt-3">
                   <input
                     type="text"
-                    placeholder="Enter your measurement (e.g. Chest: 38in, Length: 28in)"
+                    placeholder="Enter your measurement"
                     value={customMeasurement}
                     onChange={(e) => setCustomMeasurement(e.target.value)}
                     className="w-full border p-2 rounded text-xs"
