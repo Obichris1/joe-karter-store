@@ -266,7 +266,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-0 md:flex-row gap-36">
+    <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-6 md:flex-row gap-36">
       {/* Shipping Info */}
       <motion.div
         initial={{ x: -80, opacity: 0 }}
