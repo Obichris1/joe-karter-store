@@ -283,6 +283,7 @@ export default function CheckoutPage() {
             Shipping Information
           </Typography>
           <Box display="flex" flexDirection="column" gap={3}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <TextField
               fullWidth
               required
@@ -313,6 +314,9 @@ export default function CheckoutPage() {
                 ),
               }}
             />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <TextField
               fullWidth
               required
@@ -344,6 +348,7 @@ export default function CheckoutPage() {
                 ),
               }}
             />
+              </div>
             <Box display="flex" flexDirection="column" gap={3}>
               {/* Previous fields */}
             
@@ -422,6 +427,9 @@ export default function CheckoutPage() {
               />
               {/* Other fields... */}
             </Box>
+
+         
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <TextField
               fullWidth
               required
@@ -438,6 +446,7 @@ export default function CheckoutPage() {
                 },
               }}
             />
+      
 
             <TextField
               fullWidth
@@ -456,9 +465,11 @@ export default function CheckoutPage() {
               }}
             />
 
+</div>
+
             <Link
               href="/terms"
-              className="inline-block group hover:text-[#00008B] hover:underline"
+              className="inline-block group hover:text-[#00008b] hover:underline"
             >
               <div className="flex gap-2 items-center ">
                 <Typography className="!text-xs md:!text-base !font-bold !underline ">
