@@ -18,36 +18,36 @@ export default function AboutBanner() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           viewport={{ once: true }}
         >
-          <Typography className="!font-bold md:!mb-8 !mb-4 !text-lg md:!text-3xl">
+          <h1 className="!font-bold md:!mb-8 !mb-4 !text-lg md:!text-3xl">
             Need Leather?
-          </Typography>
-          <Typography
-            variant="body1"
+          </h1>
+          <p
+      
             className="!text-sm md:!text-base !leading-6  md:!leading-7 md:!mb-12"
           >
             Our people have spoken and we’re #1 on Glassdoor’s Best Places to
             Work list in the Nigeria and the UK. Since the rankings debuted in
             2009, we've ranked among the top four companies in the US every
             single year and have now earned the #1 spot a record six times.
-          </Typography>
-          <Typography
-            variant="body1"
+          </p>
+          <p
+      
             className="!text-sm md:!text-base !mt-6 !leading-6 md:!leading-7"
           >
             Our people have spoken and we’re #1 on Glassdoor’s Best Places to
             Work list in the Nigeria and the UK. Since the rankings debuted in
             2009, we've ranked among the top four companies in the US every
             single year and have now earned the #1 spot a record six times.
-          </Typography>
+          </p>
 
           <Link
             href="/services/solar-power-installation"
             className="inline-block mt-6 group hover:text-[#00008B] hover:underline"
           >
             <div className="flex gap-2 items-center md:mt-10">
-              <Typography className="!text-sm md:!text-base !font-bold !underline ">
+              <p className="!text-sm md:!text-base !font-bold !underline ">
                 Explore Products
-              </Typography>
+              </p>
               <FaArrowRight className="!text-sm md:!text-base group-hover:translate-x-2 transition-transform duration-300 " />
             </div>
           </Link>

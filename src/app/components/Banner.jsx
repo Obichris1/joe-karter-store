@@ -77,13 +77,13 @@ const HeroBanner = ({ banners }) => {
                   {banner?.title}
                 </h1>
 
-                <Typography className="!text-base text-white md:!text-xl">
+                <p className="!text-base text-white md:!text-xl">
                   {banner?.subTitle}
-                </Typography>
+                </p>
 
                 <Link
                   href="/shop"
-                  className="bg-white text-black font-semibold md:text-base text-sm px-3 py-3 w-28 rounded-full inline-block"
+                  className="bg-white text-black font-semibold md:text-base text-sm px-3 py-2 text-center w-28 rounded-full inline-block"
                 >
                   {banner?.ctaText || "Shop Now"}
                 </Link>
