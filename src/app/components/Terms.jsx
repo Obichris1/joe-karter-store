@@ -17,10 +17,7 @@ const TermsAndConditions = () => {
         transition={{ duration: 0.5 }}
       >
         <p
-          variant={isMobile ? "h6" : "h5"}
-          component="h1"
-          gutterBottom
-          fontWeight={600}
+          className="font-bold mb-4 mt-2 md:text-2xl text-xl"
         >
           Terms and Conditions
         </p>
