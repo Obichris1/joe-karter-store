@@ -108,7 +108,7 @@ const ShopPage = () => {
     <div className="!w-[95%] !m-auto px-6 py-8" >
       <Box mb={4}>
         <Typography className="!text-xl md:!text-2xl !mb-4" fontWeight="bold" gutterBottom>
-          Shop All Products
+          Shop all products
         </Typography>
 
         <Box

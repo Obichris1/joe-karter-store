@@ -29,7 +29,9 @@ import {
   AiFillHome,
   AiFillMoneyCollect,
 } from "react-icons/ai";
+import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function CheckoutPage() {
   const [isPaystackReady, setPaystackReady] = useState(false);
@@ -56,7 +58,7 @@ export default function CheckoutPage() {
 
   const cart = useSelector((state) => state.cart.productData);
   console.log(cart);
-  
+
   const router = useRouter();
 
   const deliveryFees = {
@@ -132,8 +134,26 @@ export default function CheckoutPage() {
     }
   };
 
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+
+  const isValidPhone = (phone) => {
+    const phoneRegex = /^(?:\+234|0)[789][01]\d{8}$/;
+    return phoneRegex.test(phone);
+  };
+
+
+
+  
   const handlePayment = async (e) => {
     if (e) e.preventDefault();
+
+   
+    
     if (!isPaystackReady || !window.PaystackPop) {
       toast.error("Payment system not ready. Please wait...");
       return;
@@ -152,6 +172,16 @@ export default function CheckoutPage() {
     for (const field of requiredFields) {
       if (!form[field]) {
         toast.error("Please complete your delivery information");
+        return;
+      }
+
+      if (!isValidEmail(form.email)) {
+        toast.error("Please enter a valid email address.");
+        return;
+      }
+
+      if (!isValidPhone(form.phone)) {
+        toast.error("Please enter a valid phone number.");
         return;
       }
     }
@@ -217,7 +247,6 @@ export default function CheckoutPage() {
     handler.openIframe();
   };
 
-
   if (isCartLoading) {
     return (
       <Box className="flex justify-center items-center min-h-[60vh]">
@@ -237,7 +266,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="flex flex-col md:w-[90%] mx-auto py-12 px-6 md:px-0 md:flex-row gap-36">
+    <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-0 md:flex-row gap-36">
       {/* Shipping Info */}
       <motion.div
         initial={{ x: -80, opacity: 0 }}
@@ -245,8 +274,12 @@ export default function CheckoutPage() {
         transition={{ duration: 0.6 }}
         className="w-full md:w-[50%]"
       >
-        <Paper elevation={2} className="md:!p-8 !p-6 !rounded-xl">
-          <Typography variant="h6" fontWeight="bold" className="!mb-6 !text-base md:!text-xl">
+        <Paper  className="md:!p-8 p-4 !rounded-xl">
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            className="!mb-6 !text-base md:!text-xl"
+          >
             Shipping Information
           </Typography>
           <Box display="flex" flexDirection="column" gap={3}>
@@ -299,7 +332,7 @@ export default function CheckoutPage() {
             <TextField
               fullWidth
               required
-              label="Phone"
+              label="Phone Number"
               name="phone"
               value={form.phone}
               onChange={handleChange}
@@ -311,70 +344,84 @@ export default function CheckoutPage() {
                 ),
               }}
             />
-                     <Box display="flex" flexDirection="column" gap={3}>
-            {/* Previous fields */}
-            <TextField
-              fullWidth
-              required
-              label="Address"
-              name="address"
-              value={form.address}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AiFillHome />
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <Box display="flex" flexDirection="column" gap={3}>
+              {/* Previous fields */}
+            
 
-            {/* Delivery Area Selection */}
-            <FormControl component="fieldset">
-  <FormLabel component="legend" className="!text-xs md:!text-base">
-    Select your delivery location
-  </FormLabel>
-  <RadioGroup
-    name="deliveryLocation"
-    value={form.deliveryLocation}
-    onChange={handleChange}
-    className="!grid !grid-cols-1 md:!grid-cols-2"
-  >
-    <FormControlLabel
-      value="mainland"
-      control={<Radio size="small" />}
-      label="Lagos Mainland Axis (₦500)"
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
-    />
-    <FormControlLabel
-      value="island"
-      control={<Radio size="small" />}
-      label="Island Axis (₦1000)"
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
-    />
-    <FormControlLabel
-      value="ikorodu"
-      control={<Radio size="small" />}
-      label="Ikorodu (₦800)"
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
-    />
-    <FormControlLabel
-      value="epe"
-      control={<Radio size="small" />}
-      label="Epe (₦1500)"
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
-    />
-    <FormControlLabel
-      value="badagry"
-      control={<Radio size="small" />}
-      label="Badagry (₦1200)"
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.8rem' } }}
-    />
-  </RadioGroup>
-</FormControl>
+              {/* Delivery Area Selection */}
+              <FormControl component="fieldset">
+                <FormLabel
+                  component="legend"
+                  className="!text-sm !mb-4 !font-bold md:!text-base !text-black"
+                >
+                  Select your delivery location
+                </FormLabel>
+                <RadioGroup
+                  name="deliveryLocation"
+                  value={form.deliveryLocation}
+                  onChange={handleChange}
+                  className="!grid !grid-cols-1 md:!grid-cols-2 !text-black"
+                >
+                  <FormControlLabel
+                    value="mainland"
+                    control={<Radio size="small" className="!text-black" />}
+                    label="Lagos Mainland Axis (₦500)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+                  <FormControlLabel
+                    value="island"
+                    control={<Radio size="small" className="!text-black"  />}
+                    label="Island Axis (₦1000)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+                  <FormControlLabel
+                    value="ikorodu"
+                    control={<Radio size="small" className="!text-black"  />}
+                    label="Ikorodu (₦800)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+                  <FormControlLabel
+                    value="epe"
+                    control={<Radio size="small" className="!text-black"  />}
+                    label="Epe (₦1500)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+                  <FormControlLabel
+                    value="badagry"
+                    control={<Radio size="small" className="!text-black"  />}
+                    label="Badagry (₦1200)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+                </RadioGroup>
+              </FormControl>
 
-            {/* Other fields... */}
-          </Box>
+              <TextField
+                fullWidth
+                required
+                label="Address"
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillHome />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {/* Other fields... */}
+            </Box>
             <TextField
               fullWidth
               required
@@ -382,7 +429,16 @@ export default function CheckoutPage() {
               name="city"
               value={form.city}
               onChange={handleChange}
+              InputLabelProps={{
+                sx: {
+                  fontSize: {
+                    xs: "0.75rem", // ~12px on extra-small screens
+                    sm: "0.85rem", // ~13.6px on small and above
+                  },
+                },
+              }}
             />
+
             <TextField
               fullWidth
               required
@@ -390,16 +446,42 @@ export default function CheckoutPage() {
               name="state"
               value={form.state}
               onChange={handleChange}
+              InputLabelProps={{
+                sx: {
+                  fontSize: {
+                    xs: "0.75rem",
+                    sm: "0.85rem",
+                  },
+                },
+              }}
             />
+
+            <Link
+              href="/terms"
+              className="inline-block group hover:text-[#00008B] hover:underline"
+            >
+              <div className="flex gap-2 items-center ">
+                <Typography className="!text-xs md:!text-base !font-bold !underline ">
+                  Terms and Conditions
+                </Typography>
+                <FaArrowRight className="!text-sm md:!text-base group-hover:translate-x-2 transition-transform duration-300 " />
+              </div>
+            </Link>
+
             <FormControlLabel
-              className="p-0 !text-xs"
+              className="p-0"
               control={
                 <Checkbox
+                  className="!text-xs !text-black"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
                 />
               }
-              label="I agree to the Terms and Conditions"
+              label={
+                <span className="text-xs sm:text-sm">
+                  I agree to the Terms and Conditions
+                </span>
+              }
             />
           </Box>
         </Paper>
@@ -413,13 +495,22 @@ export default function CheckoutPage() {
         className="flex-1"
       >
         <Paper elevation={2} className="md:!p-8 !p-6 !rounded-xl">
-          <Typography variant="h6" fontWeight="bold" className="!mb-6 !text-base md:!text-xl">
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            className="!mb-6 !text-base md:!text-xl"
+          >
             Order Summary
           </Typography>
           <Box className="space-y-8">
             {cart.map((item) => (
-              <Box key={item._id} className="flex justify-between text-sm text-gray-700">
-                <span>{item.title} × {item.quantity}</span>
+              <Box
+                key={item._id}
+                className="flex justify-between text-sm text-gray-700"
+              >
+                <span>
+                  {item.title} × {item.quantity}
+                </span>
                 <span className="font-bold">
                   ₦{(item.price * item.quantity).toLocaleString()}
                 </span>
@@ -438,7 +529,7 @@ export default function CheckoutPage() {
             </Box>
 
             <Box className="space-y-2">
-              <Typography className="!mb-2 !text-sm">Promo code</Typography>
+              <Typography className="!mb-4 !text-sm ">Promo code</Typography>
               <Box className="flex gap-2 items-center">
                 <TextField
                   fullWidth
@@ -447,14 +538,14 @@ export default function CheckoutPage() {
                   onChange={handleChange}
                   size="small"
                   placeholder="Enter promo code"
-                
-                  inputProps={{ style: { fontSize: "0.75rem" } }}
+                  inputProps={{ style: { fontSize: "1rem" } }}
+                  
                 />
                 <Button
                   variant="contained"
                   onClick={handleApplyCoupon}
                   disabled={isApplying}
-                  className="!bg-black hover:!scale-105 !capitalize !transition !ease-in-out duration-300"
+                  className="!bg-black !text-white hover:!scale-105 !capitalize !transition !ease-in-out duration-300"
                 >
                   {isApplying ? "Checking..." : "Apply"}
                 </Button>
@@ -483,27 +574,26 @@ export default function CheckoutPage() {
             </Box>
 
             <form
-  onSubmit={(e) => {
-    e.preventDefault();
-    handlePayment();
-  }}
->
-  <Button
-    type="submit"
-    variant="contained"
-    disabled={!isPaystackReady || isProcessing}
-    className="!bg-black w-full hover:!scale-105 !py-2 !transition capitalize !ease-in-out duration-300 !mt-6"
-  >
-    {isProcessing ? (
-      <CircularProgress size={25} sx={{ color: "#fff" }} />
-    ) : (
-      <Typography className="!text-xs md:!text-base capitalize">
-        Pay with Paystack
-      </Typography>
-    )}
-  </Button>
-</form>
-
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlePayment();
+              }}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!isPaystackReady || isProcessing}
+                className="!bg-black !text-white w-full hover:!scale-105 !py-3 !transition capitalize !ease-in-out duration-300 !mt-6"
+              >
+                {isProcessing ? (
+                  <CircularProgress className="!text-white" size={25}  sx={{ color: "#fff" }} />
+                ) : (
+                  <Typography className="!text-xs !text-white !font-bold  md:!text-base capitalize">
+                    Pay with Paystack
+                  </Typography>
+                )}
+              </Button>
+            </form>
           </Box>
         </Paper>
       </motion.div>

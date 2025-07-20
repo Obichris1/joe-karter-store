@@ -89,7 +89,7 @@ export default function SearchPage() {
           <p className="text-gray-500 mb-4 text-sm md:text-base">
             No products found.
           </p>
-          <Link href="/products">
+          <Link href="/shop">
             <button className="border px-6 py-2  text-sm rounded-lg bg-black text-white hover:!scale-105  !transition capitalize !ease-in-out duration-300">
               Back to Shop
             </button>

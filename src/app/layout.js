@@ -1,20 +1,15 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { storeSlice } from "@/redux/store";
 import { ReduxProvider } from "./configs/redux-provider";
 import Script from "next/script";
 import WhatsAppIcon from "./components/WhatsappIcon";
+import { Poppins } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"], // ✅ Add weights you plan to use
 });
 
 export const metadata = {
@@ -25,19 +20,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} antialiased`}>
         <ReduxProvider>
           <Header />
-
           {children}
           <WhatsAppIcon />
         </ReduxProvider>
         <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
         <Footer />
       </body>
-   
     </html>
   );
 }

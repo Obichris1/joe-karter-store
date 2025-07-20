@@ -32,7 +32,7 @@ const Header = () => {
     <header className="sticky top-0 z-50 bg-white">
       <div className="px-6 py-2 flex md:w-[95%] w-full  m-auto justify-between items-center bg-white">
         {/* Logo (visible on all screens) */}
-        <Link href="/" className="text-xl font-bold text-black">
+        <Link href="/" className="text-xl md:text-2xl font-bold text-black">
           Joe Karter
         </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium text-gray-700">
@@ -48,7 +48,7 @@ const Header = () => {
             href="/athleisure"
             className={`px-3 py-4 rounded-xl transition-colors duration-200
               hover:text-black hover:bg-gray-50
-              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold -translate-y-2' : ''}`}
+              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold ' : ''}`}
           >
             Shop Nobody Dies
           </Link>
@@ -62,7 +62,7 @@ const Header = () => {
         <form onSubmit={handleSearch} className="relative hidden md:block w-[300px]">
           <input
             type="text"
-            placeholder="Search tags (e.g. men, women, shoes)"
+            placeholder="Search (e.g. men, women, shoes)"
             className="w-full pl-4 pr-0 py-3 rounded-full text-sm text-gray-700 bg-gray-100 focus:outline-none"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
