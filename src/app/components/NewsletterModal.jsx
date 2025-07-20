@@ -91,7 +91,7 @@ export default function NewsletterModal() {
         <DialogActions className="!justify-center w-full">
           <Button
             variant="contained"
-            className="!bg-white !text-black !font-semibold !rounded-full !px-6 !py-2 !text-xs sm:!text-sm w-full"
+            className="!bg-white !text-black !font-semibold !rounded-full !px-6 !py-2 !text-xs sm:!text-sm "
           >
             SUBSCRIBE
           </Button>

@@ -1,6 +1,7 @@
 // components/Footer.js
 import Image from "next/image";
 import { TextField, Typography, Button,Divider } from "@mui/material";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -42,7 +43,7 @@ const Footer = () => {
         <div className="flex flex-col items-center text-xs md:text-sm  gap-3">
           <a href="#">Home</a>
           <a href="#">Who we are</a>
-          <a href="#">Why us</a>
+          <a href="/terms">Terms /Privacy Policy</a>
           <a href="/contact">Contact Us</a>
         </div>
 
@@ -55,13 +56,41 @@ const Footer = () => {
       </div>
        <Divider />
       {/* JK Logo */}
-      <div className="flex justify-center pb-1">
+      <div className="flex md:flex-col">
+    
+
+      <div className="py-4 w-[95%] m-auto text-white flex flex-col md:flex-row justify-between items-center gap-2">
+       
+      <Typography className="!text-xs !hidden md:!flex  md:!text-sm !text-black text-center">
+          Copyright &copy; 2025 Joe Karter. All rights reserved
+        </Typography>
+
+        <div className="md:mr-12 justify-center  ">
         <Image
           src="/Jk.png"
           alt="Joe Karter Logo"
           width={60}
           height={60}
         />
+      </div>
+         
+
+      <Typography className="!text-xs md:!text-sm !text-black md:!hidden !text-center">
+          Copyright &copy; 2025 Joe Karter. All rights reserved
+        </Typography>
+        <div className="flex items-center justify-center md:flex-row gap-1">
+          <Typography className="!text-xs md:!text-sm  !text-black text-center">
+            Designed by
+          </Typography>
+          <Typography className="!text-xs md:!text-sm !underline  !text-black text-center">
+            <Link href="https://www.oxrissolutions.com/" target="_blank">
+              Oxris Solutions
+            </Link>
+          </Typography>
+
+          
+        </div>
+      </div>
       </div>
     </footer>
   );
