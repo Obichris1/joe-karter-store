@@ -22,8 +22,8 @@ const TermsAndConditions = () => {
           Terms and Conditions
         </p>
 
-        <p variant="body2" paragraph>
-          Welcome to Joe Karter Ecommerce Store. By accessing or using our
+        <p className="text-xs md:text-base leading-6" >
+          Welcome to Joe Karter Store. By accessing or using our
           website, you agree to be bound by the following terms and conditions.
           Please read them carefully.
         </p>
@@ -69,7 +69,7 @@ const TermsAndConditions = () => {
           contact us at joekarterng@gmail.com.
         </Section>
 
-        <p className="mt-4" color="text.secondary">
+        <p className="mt-6 text-gray-400">
           Last updated: July 2025
         </p>
       </motion.div>
@@ -90,7 +90,7 @@ const TermsAndConditions = () => {
 const Section = ({ title, children }) => (
   <>
     <p className="mt-6 mb-2 font-bold">{title}</p>
-    <p className="">{children}</p>
+    <p className="text-xs md:text-base leading-6">{children}</p>
   </>
 );
 
