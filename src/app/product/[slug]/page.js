@@ -47,7 +47,7 @@ export default function ProductPage() {
     };
 
     const fetchRelatedProducts = async () => {
-      const query = `*[_type == "product" && category == "leather"]{
+      const query = `*[_type == "product" && category == product.category ]{
         _id,
         title,
         slug,
@@ -65,6 +65,9 @@ export default function ProductPage() {
       fetchRelatedProducts();
     }
   }, [slug]);
+  console.log(product);
+  console.log(products);
+  
 
   const handleAddToCart = () => {
     dispatch(
