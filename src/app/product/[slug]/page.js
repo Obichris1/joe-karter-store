@@ -46,8 +46,18 @@ export default function ProductPage() {
       setProduct(result);
     };
 
+
+    if (slug) {
+      fetchProduct();
+   
+    }
+  }, [slug]);
+
+
+  useEffect(() => {
+    if (!product) return; // wait until product is fetched
     const fetchRelatedProducts = async () => {
-      const query = `*[_type == "product" && category == product.category ]{
+      const query = `*[_type == "product" && category == "${product.category}" && slug.current != "${slug}"]{
         _id,
         title,
         slug,
@@ -59,12 +69,9 @@ export default function ProductPage() {
       const result = await client.fetch(query);
       setProducts(result);
     };
-
-    if (slug) {
-      fetchProduct();
-      fetchRelatedProducts();
-    }
-  }, [slug]);
+    fetchRelatedProducts();
+  }, [product]); // runs only when product changes
+  
   console.log(product);
   console.log(products);
   
