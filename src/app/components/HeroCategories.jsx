@@ -18,7 +18,7 @@ export default function HeroCategories() {
       title: 'Shop Gym Wears',
       description:
         'Discover fashion that speaks your vibe. Curated trends, timeless pieces, and effortless style—because you deserve to stand out.',
-      image: '/assets/gym2.jpeg',
+      image: '/assets/NBD3.jpeg',
       route: '/athleisure',
     },
   ];
