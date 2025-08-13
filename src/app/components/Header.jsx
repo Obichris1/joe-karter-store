@@ -52,6 +52,15 @@ const Header = () => {
           >
             Shop Nobody Dies
           </Link>
+
+          <Link
+            href="/playground"
+            className={`px-3 py-4 rounded-xl transition-colors duration-200
+              hover:text-black hover:bg-gray-50
+              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold ' : ''}`}
+          >
+            The playground
+          </Link>
         </nav>
 
         {/* Cart icon - visible on all screens */}
@@ -190,6 +199,15 @@ const Header = () => {
       >
         <FaHeart className="text-red-500" />
         <span> My Wishlist</span>
+      </Link>
+
+      <Link
+        href="/playground"
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 text-sm mb-10 text-gray-800 font-bold"
+      >
+      
+        <span>The playground</span>
       </Link>
 
       <Link
