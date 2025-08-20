@@ -178,7 +178,7 @@ const Header = () => {
       <Link
         href="/playground"
         onClick={() => setMobileOpen(false)}
-        className="flex items-center gap-3 text-sm mb-10 text-[#dbba5f]font-bold"
+        className="flex items-center gap-3 text-sm mb-10 text-[#dbba5f] font-bold"
       >
       
         <span>The playground</span>
