@@ -32,14 +32,19 @@ import {
 import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 
 export default function CheckoutPage() {
+
   const [isPaystackReady, setPaystackReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [promoTried, setPromoTried] = useState(false);
+
 
   const [form, setForm] = useState({
     firstName: "",
@@ -268,6 +273,9 @@ export default function CheckoutPage() {
   return (
     <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-6 md:flex-row gap-36">
       {/* Shipping Info */}
+      <IconButton onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon />
+    </IconButton>
       <motion.div
         initial={{ x: -80, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

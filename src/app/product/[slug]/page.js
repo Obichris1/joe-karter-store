@@ -15,10 +15,15 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "@/redux/slices/wishListSlice";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
+
 
 export default function ProductPage() {
   const dispatch = useDispatch();
   const { slug } = useParams();
+  const router = useRouter();
 
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -72,8 +77,7 @@ export default function ProductPage() {
     fetchRelatedProducts();
   }, [product]); // runs only when product changes
   
-  console.log(product);
-  console.log(products);
+
   
 
   const handleAddToCart = () => {
@@ -141,9 +145,17 @@ export default function ProductPage() {
 
   return (
     <div>
+     
       <div className="max-w-7xl mx-auto w-[90%] py-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-40">
+    
         {/* Images */}
         <div className="relative">
+
+        <IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon  />
+    </IconButton>
+   
+          
           <div className="relative aspect-auto rounded-xl overflow-hidden">
             <Image
               src={product.images[selectedImage]?.asset.url}

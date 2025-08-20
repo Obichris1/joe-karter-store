@@ -5,6 +5,9 @@ import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import { TextField, MenuItem,Box,CircularProgress } from "@mui/material";
 import { motion } from "framer-motion"; // <-- import framer-motion
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
 
 async function getEvent() {
   const query = `*[_type == "eventTicket"][0]{
@@ -25,6 +28,7 @@ async function getEvent() {
 export default function EventPage() {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true)
+
  
   useEffect(() => {
     const events = async () => {
@@ -60,10 +64,14 @@ export default function EventPage() {
 
 function EventDetails({ event }) {
   const [selectedTicket, setSelectedTicket] = useState(event.tickets?.[0]);
+  const router = useRouter();
 
   return (
-    <div className="flex flex-col gap-8 items-start justify-center mx-auto w-[90%] py-10">
-      <p className="text-2xl md:text-3xl font-bold">
+    <div className="flex flex-col gap-4 items-start justify-center mx-auto w-[90%] py-4">
+         <IconButton onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon />
+    </IconButton>
+      <p className="text-2xl md:text-3xl mb-6 font-bold">
         NBD athleisure presents: The Playground
       </p>
 

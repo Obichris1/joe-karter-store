@@ -4,13 +4,20 @@ import React from "react";
 import { Container, Button, useTheme, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
 
 const TermsAndConditions = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const router = useRouter();
   return (
+    
     <div className="!w-[95%] p-4 md:p-6 !m-auto max-w-4xl">
+      <IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon  />
+    </IconButton>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

@@ -9,10 +9,15 @@ import { removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { toast, Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
+
 
 export default function WishlistPage() {
   const items = useSelector((state) => state.wishlist?.wishlistData || []);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(2); // For "Load More"
 
@@ -31,6 +36,9 @@ export default function WishlistPage() {
 
   return (
     <div className="space-y-12 w-[90%] m-auto py-6">
+      <IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon  />
+    </IconButton>
       <h2 className="text-base md:text-2xl font-semibold">My Wishlist</h2>
 
       {loading ? (

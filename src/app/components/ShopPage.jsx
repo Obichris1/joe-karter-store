@@ -21,6 +21,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { toast, Toaster } from "react-hot-toast";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
@@ -29,6 +32,7 @@ const ShopPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(8);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const dispatch = useDispatch();
   const wishlistData = useSelector((state) => state.wishlist?.wishlistData || []);
@@ -105,7 +109,12 @@ const ShopPage = () => {
     .slice(0, visibleCount);
 
   return (
-    <div className="!w-[95%] !m-auto px-6 py-8" >
+    <div className="!w-[95%] !m-auto px-6 py-4" >
+
+<IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon  />
+    </IconButton>
+   
       <Box mb={4}>
         <Typography className="!text-xl md:!text-2xl !mb-4" fontWeight="bold" gutterBottom>
           Shop all products

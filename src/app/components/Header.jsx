@@ -35,33 +35,64 @@ const Header = () => {
         <Link href="/" className="text-xl md:text-2xl font-bold text-black">
           Joe Karter
         </Link>
-        <nav className="hidden md:flex gap-6 text-sm font-medium text-gray-700">
-          <Link
-            href="/leather"
-            className={`px-3 py-4 text-center rounded-xl transition-colors duration-200
-              hover:text-black hover:bg-gray-50
-              ${pathname.startsWith('/leather') ? 'bg-gray-100 text-black font-semibold' : ''}`}
-          >
-            Shop Leather Goods
-          </Link>
-          <Link
-            href="/athleisure"
-            className={`px-3 py-4 rounded-xl transition-colors duration-200
-              hover:text-black hover:bg-gray-50
-              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold ' : ''}`}
-          >
-            Shop Nobody Dies
-          </Link>
+        <nav className="hidden md:flex gap-6 text-sm font-medium text-gray-700 items-center">
+  <Link
+    href="/leather"
+    className={`px-3 py-4 text-center rounded-xl transition-colors duration-200
+      hover:text-black hover:bg-gray-50
+      ${pathname.startsWith('/leather') ? 'bg-gray-100 text-black font-semibold' : ''}`}
+  >
+    Shop Leather Goods
+  </Link>
+  <Link
+    href="/athleisure"
+    className={`px-3 py-4 rounded-xl transition-colors duration-200
+      hover:text-black hover:bg-gray-50
+      ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold ' : ''}`}
+  >
+    Shop Nobody Dies
+  </Link>
 
-          <Link
-            href="/playground"
-            className={`px-3 py-4 rounded-xl transition-colors duration-200
-              hover:text-black hover:bg-gray-50
-              ${pathname.startsWith('/athleisure') ? 'bg-gray-100 text-black font-semibold ' : ''}`}
-          >
-            The playground
-          </Link>
-        </nav>
+  <Link
+    href="/playground"
+    className={`px-3 py-4 rounded-xl transition-colors duration-200
+      hover:text-black hover:bg-gray-50
+      ${pathname.startsWith('/playground') ? 'bg-gray-100 text-black font-semibold ' : 'text-[#dbba5f] font-semibold'}`}
+  >
+    The Playground
+  </Link>
+
+  {/* Dropdown for About + Contact */}
+  <div className="relative group">
+    <button
+      className="px-3 py-4 flex items-center gap-1 rounded-xl transition-colors duration-200 hover:text-black hover:bg-gray-50"
+    >
+      More <FaChevronDown className="text-xs mt-[2px]" />
+    </button>
+    <div className="absolute left-0 hidden group-hover:block bg-white shadow-lg rounded-xl py-2 w-40">
+      <Link
+        href="/about"
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        About Us
+      </Link>
+      <Link
+        href="/contact"
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Contact Us
+      </Link>
+
+      <Link
+        href="/terms"
+        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Terms & Privacy Policy
+      </Link>
+    </div>
+  </div>
+</nav>
+
 
         {/* Cart icon - visible on all screens */}
         <div className="flex items-center gap-3">
@@ -143,6 +174,17 @@ const Header = () => {
         </button>
       </form>
 
+
+      <Link
+        href="/playground"
+        onClick={() => setMobileOpen(false)}
+        className="flex items-center gap-3 text-sm mb-10 text-[#dbba5f]font-bold"
+      >
+      
+        <span>The playground</span>
+      </Link>
+
+
       <Link
         href="/"
         onClick={() => setMobileOpen(false)}
@@ -201,15 +243,7 @@ const Header = () => {
         <span> My Wishlist</span>
       </Link>
 
-      <Link
-        href="/playground"
-        onClick={() => setMobileOpen(false)}
-        className="flex items-center gap-3 text-sm mb-10 text-gray-800 font-bold"
-      >
-      
-        <span>The playground</span>
-      </Link>
-
+  
       <Link
         href="/contact"
         onClick={() => setMobileOpen(false)}

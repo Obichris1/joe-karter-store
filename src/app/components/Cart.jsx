@@ -11,10 +11,14 @@ import {
 } from "@/redux/slices/cartSlice";
 import Link from "next/link";
 import { Button, CircularProgress, Box, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const items = useSelector((state) => state.cart.productData);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [isCartLoading, setIsCartLoading] = useState(true);
 
   useEffect(() => {
@@ -42,9 +46,13 @@ export default function CartPage() {
 
   return (
     <div className="flex flex-col w-[90%] m-auto lg:flex-row py-6 gap-8">
+    
       {/* Cart Items */}
       <div className="flex-1">
-        <h2 className="text-base md:text-xl font-semibold mb-4">
+      <IconButton onClick={() => router.back()} aria-label="go back">
+      <ArrowBackIcon />
+    </IconButton>
+        <h2 className="text-base md:text-xl font-semibold mt-2 mb-4">
           Purchase Summary
         </h2>
 
