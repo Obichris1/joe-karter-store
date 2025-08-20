@@ -62,7 +62,7 @@ export default function CheckoutPage() {
   const [couponApplied, setCouponApplied] = useState(false);
 
   const cart = useSelector((state) => state.cart.productData);
-  console.log(cart);
+
 
   const router = useRouter();
 

@@ -22,7 +22,7 @@ export default function ProductSections({ products }) {
     new: 8,
   });
   const dispatch = useDispatch();
-  console.log(products)
+
 
   const wishlistData = useSelector(
     (state) => state.wishlist?.wishlistData || []
@@ -39,7 +39,7 @@ export default function ProductSections({ products }) {
   };
 
   const productCategory = products[0].category
-  console.log(productCategory);
+
   
 
   const isInWishlist = (productId) =>

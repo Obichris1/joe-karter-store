@@ -59,7 +59,7 @@ export default {
       {
         name: 'ctaLink',
         title: 'Call To Action Link',
-        type: 'url',
+        type: 'string',
       }
     ],
   };

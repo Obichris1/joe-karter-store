@@ -7,7 +7,7 @@ export async function POST(req) {
 
     const customerName = `${form.firstName} ${form.lastName}`;
 
-    console.log("cart issss", cart)
+  
 
     const cartItems = cart
       .map(

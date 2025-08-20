@@ -41,7 +41,7 @@ export default function ContactForm() {
       [name]: value, // Always reference the latest state
     }));
   };
-  console.log(formData);
+
 
   // const handleDate = (event) => {
   //   const selectedDate = event.target.value; // ISO date string
@@ -73,7 +73,6 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       });     
 
-      console.log(response);
 
       if (response.ok) {
         setFormData({ name: "", email: "", message: "" });

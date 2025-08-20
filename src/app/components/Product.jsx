@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Product = ({ product }) => {
   const { images, name, slug, price } = product;
-//   console.log(product);
+//   
   
 
   const imageUrl = images?.length ? urlFor(images[0]).url() : '/placeholder.png'; // ← use fallback

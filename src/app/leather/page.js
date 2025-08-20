@@ -9,8 +9,7 @@ const LeatherProducts = async () => {
 
     const { banners } = await getData();
     const { products} = await fetchProducts();
-    console.log(banners);
-    console.log(products);
+  
   return (
     <div className='space-y-12'>
        <HeroBanner banners={banners.length && banners}   /> 

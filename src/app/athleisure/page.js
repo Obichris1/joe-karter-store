@@ -8,8 +8,7 @@ const Athleisure = async () => {
 
   const { banners } = await getData();
   const { products} = await fetchProducts();
-  console.log(banners);
-  console.log(products);
+
 return (
   <div className='space-y-8'>
      <HeroBanner banners={banners.length && banners}   /> 

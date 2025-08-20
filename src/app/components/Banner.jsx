@@ -4,17 +4,19 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { urlFor } from "@/sanity/lib/image";
-import { Typography } from "@mui/material";
 
 const HeroBanner = ({ banners }) => {
   const [current, setCurrent] = useState(0);
-  const [progress, setProgress] = useState(0);
   const progressRef = useRef(0);
   const currentRef = useRef(0);
   const intervalRef = useRef(null);
 
+  if (!banners || banners.length === 0) return null;
+
   useEffect(() => {
-    if (!banners || banners.length === 0) return;
+    progressRef.current = 0;
+    currentRef.current = 0;
+    setCurrent(0);
 
     intervalRef.current = setInterval(() => {
       progressRef.current += 1;
@@ -24,14 +26,10 @@ const HeroBanner = ({ banners }) => {
         currentRef.current = (currentRef.current + 1) % banners.length;
         setCurrent(currentRef.current);
       }
-
-      setProgress(progressRef.current);
     }, 180);
 
     return () => clearInterval(intervalRef.current);
-  }, [banners]);
-
-  if (!banners || banners?.length === 0) return null;
+  }, [banners.length]);
 
   const banner = banners[current];
   const hasVideo = !!banner?.video?.asset?.url;
@@ -54,7 +52,7 @@ const HeroBanner = ({ banners }) => {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover "
+              className="w-full h-full object-cover"
               src={banner?.video?.asset?.url}
             />
           ) : hasImage ? (
@@ -76,13 +74,11 @@ const HeroBanner = ({ banners }) => {
                 <h1 className="text-2xl md:text-3xl font-bold">
                   {banner?.title}
                 </h1>
-
                 <p className="!text-base text-white md:!text-xl">
                   {banner?.subTitle}
                 </p>
-
                 <Link
-                  href="/shop"
+                  href={banner?.ctaLink}
                   className="bg-white text-black font-semibold md:text-base text-sm px-3 py-2 text-center w-28 rounded-full inline-block"
                 >
                   {banner?.ctaText || "Shop Now"}
@@ -104,7 +100,7 @@ const HeroBanner = ({ banners }) => {
             {index === current && (
               <div
                 className="h-full bg-white transition-all duration-100"
-                style={{ width: `${progress}%` }}
+                style={{ width: `${progressRef.current}%` }}
               />
             )}
           </div>
