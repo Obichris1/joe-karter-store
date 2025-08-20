@@ -22,6 +22,7 @@ export default function ProductSections({ products }) {
     new: 8,
   });
   const dispatch = useDispatch();
+  console.log(products)
 
   const wishlistData = useSelector(
     (state) => state.wishlist?.wishlistData || []
@@ -36,6 +37,10 @@ export default function ProductSections({ products }) {
       [key]: prev[key] + 4,
     }));
   };
+
+  const productCategory = products[0].category
+  console.log(productCategory);
+  
 
   const isInWishlist = (productId) =>
     Array.isArray(wishlistData) &&
@@ -69,7 +74,7 @@ export default function ProductSections({ products }) {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg md:text-2xl font-semibold">{label}</h2>
               <Link
-                href="/shop"
+                href={`/shop/${productCategory}`}
                 className="border px-5 py-2 rounded-full text-xs md:text-sm hover:bg-black hover:text-white transition"
               >
                 Shop Now
