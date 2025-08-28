@@ -78,7 +78,7 @@ export default function ProductPage() {
   }, [product]); // runs only when product changes
   
 
-  
+  console.log(product)
 
   const handleAddToCart = () => {
     dispatch(
@@ -87,7 +87,7 @@ export default function ProductPage() {
         slug: product.slug.current,
         title: product.title,
         price: product.price,
-        image: product.images[0]?.asset.url,
+        image: product.images?.[0]?.asset?.url || "",
         quantity,
         size: useCustomMeasurement ? customMeasurement : selectedSize,
         color: selectedColor,

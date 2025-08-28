@@ -18,7 +18,7 @@ const sections = {
 export default function ProductSections({ products }) {
   const [visibleCounts, setVisibleCounts] = useState({
     topPicks: 8,
-    featured: 3,
+    featured: 8,
     new: 8,
   });
   const dispatch = useDispatch();
@@ -59,9 +59,19 @@ export default function ProductSections({ products }) {
 
   const handleAddToCart = (e, product) => {
     e.preventDefault();
-    dispatch(addToCart({ ...product, quantity: 1 }));
+    dispatch(
+      addToCart({
+        _id: product._id,
+        slug: product.slug.current,
+        title: product.title,
+        price: product.price,
+        image: product.images?.[0]?.asset?.url || "", // ✅ always a string
+        quantity: 1,
+      })
+    );
     toast.success("Added to cart 🛒");
   };
+  
 
   return (
     <div className="space-y-12 w-[95%] m-auto">

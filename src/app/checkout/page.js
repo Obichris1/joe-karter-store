@@ -35,16 +35,13 @@ import Link from "next/link";
 import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 export default function CheckoutPage() {
-
   const [isPaystackReady, setPaystackReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [promoTried, setPromoTried] = useState(false);
-
 
   const [form, setForm] = useState({
     firstName: "",
@@ -62,7 +59,6 @@ export default function CheckoutPage() {
   const [couponApplied, setCouponApplied] = useState(false);
 
   const cart = useSelector((state) => state.cart.productData);
-
 
   const router = useRouter();
 
@@ -139,26 +135,19 @@ export default function CheckoutPage() {
     }
   };
 
-
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
 
   const isValidPhone = (phone) => {
     const phoneRegex = /^(?:\+234|0)[789][01]\d{8}$/;
     return phoneRegex.test(phone);
   };
 
-
-
-  
   const handlePayment = async (e) => {
     if (e) e.preventDefault();
 
-   
-    
     if (!isPaystackReady || !window.PaystackPop) {
       toast.error("Payment system not ready. Please wait...");
       return;
@@ -220,7 +209,8 @@ export default function CheckoutPage() {
     }
 
     const handler = window.PaystackPop.setup({
-      key: paystackTestKey,
+      // key: paystackTestKey,
+      key: process.env.PAYSTACK_LIVE_KEY,
       email: form.email,
       amount: total * 100,
       currency: "NGN",
@@ -238,11 +228,33 @@ export default function CheckoutPage() {
           },
         ],
       },
-      callback: function () {
-        toast.success("Payment successful! 🎉");
-        setIsProcessing(false);
-        router.push("/success");
+      callback: function (response) {
+ 
+      
+        (async () => {
+          try {
+            const res = await fetch("/api/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ reference: response?.reference }),
+            });
+
+            const data = await res.json();
+       
+            if (data.success) {
+              toast.success("Payment verified ✅");
+              router.push("/success");
+            } else {
+              toast.error("Payment could not be verified ❌");
+            }
+          } catch (error) {
+            toast.error("Verification failed, please try again.");
+          } finally {
+            setIsProcessing(false);
+          }
+        })();
       },
+
       onClose: function () {
         toast("Transaction cancelled");
         setIsProcessing(false);
@@ -273,16 +285,18 @@ export default function CheckoutPage() {
   return (
     <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-6 md:flex-row gap-36">
       {/* Shipping Info */}
-      <IconButton onClick={() => router.back()} aria-label="go back">
-      <ArrowBackIcon />
-    </IconButton>
+     
       <motion.div
         initial={{ x: -80, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full md:w-[50%]"
       >
-        <Paper  className="md:!p-8 p-4 !rounded-xl">
+
+<IconButton onClick={() => router.back()} aria-label="go back" className="!mb-5">
+        <ArrowBackIcon />
+      </IconButton>
+        <Paper className="md:!p-8 !p-4 !rounded-xl">
           <Typography
             variant="h6"
             fontWeight="bold"
@@ -292,74 +306,73 @@ export default function CheckoutPage() {
           </Typography>
           <Box display="flex" flexDirection="column" gap={3}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <TextField
-              fullWidth
-              required
-              label="First Name"
-              name="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AiOutlineUser />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              fullWidth
-              required
-              label="Last Name"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AiOutlineUser />
-                  </InputAdornment>
-                ),
-              }}
-            />
+              <TextField
+                fullWidth
+                required
+                label="First Name"
+                name="firstName"
+                value={form.firstName}
+                onChange={handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiOutlineUser />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                label="Last Name"
+                name="lastName"
+                value={form.lastName}
+                onChange={handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiOutlineUser />
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <TextField
-              fullWidth
-              required
-              label="Email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              type="email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AiFillMail />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              fullWidth
-              required
-              label="Phone Number"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AiFillPhone />
-                  </InputAdornment>
-                ),
-              }}
-            />
-              </div>
+              <TextField
+                fullWidth
+                required
+                label="Email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                type="email"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillMail />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                label="Phone Number"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AiFillPhone />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
             <Box display="flex" flexDirection="column" gap={3}>
               {/* Previous fields */}
-            
 
               {/* Delivery Area Selection */}
               <FormControl component="fieldset">
@@ -385,7 +398,7 @@ export default function CheckoutPage() {
                   />
                   <FormControlLabel
                     value="island"
-                    control={<Radio size="small" className="!text-black"  />}
+                    control={<Radio size="small" className="!text-black" />}
                     label="Island Axis (₦1000)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
@@ -393,7 +406,7 @@ export default function CheckoutPage() {
                   />
                   <FormControlLabel
                     value="ikorodu"
-                    control={<Radio size="small" className="!text-black"  />}
+                    control={<Radio size="small" className="!text-black" />}
                     label="Ikorodu (₦800)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
@@ -401,7 +414,7 @@ export default function CheckoutPage() {
                   />
                   <FormControlLabel
                     value="epe"
-                    control={<Radio size="small" className="!text-black"  />}
+                    control={<Radio size="small" className="!text-black" />}
                     label="Epe (₦1500)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
@@ -409,7 +422,7 @@ export default function CheckoutPage() {
                   />
                   <FormControlLabel
                     value="badagry"
-                    control={<Radio size="small" className="!text-black"  />}
+                    control={<Radio size="small" className="!text-black" />}
                     label="Badagry (₦1200)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
@@ -436,44 +449,41 @@ export default function CheckoutPage() {
               {/* Other fields... */}
             </Box>
 
-         
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <TextField
-              fullWidth
-              required
-              label="City"
-              name="city"
-              value={form.city}
-              onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  fontSize: {
-                    xs: "0.75rem", // ~12px on extra-small screens
-                    sm: "0.85rem", // ~13.6px on small and above
+              <TextField
+                fullWidth
+                required
+                label="City"
+                name="city"
+                value={form.city}
+                onChange={handleChange}
+                InputLabelProps={{
+                  sx: {
+                    fontSize: {
+                      xs: "0.75rem", // ~12px on extra-small screens
+                      sm: "0.85rem", // ~13.6px on small and above
+                    },
                   },
-                },
-              }}
-            />
-      
+                }}
+              />
 
-            <TextField
-              fullWidth
-              required
-              label="State"
-              name="state"
-              value={form.state}
-              onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  fontSize: {
-                    xs: "0.75rem",
-                    sm: "0.85rem",
+              <TextField
+                fullWidth
+                required
+                label="State"
+                name="state"
+                value={form.state}
+                onChange={handleChange}
+                InputLabelProps={{
+                  sx: {
+                    fontSize: {
+                      xs: "0.75rem",
+                      sm: "0.85rem",
+                    },
                   },
-                },
-              }}
-            />
-
-</div>
+                }}
+              />
+            </div>
 
             <Link
               href="/terms"
@@ -558,7 +568,6 @@ export default function CheckoutPage() {
                   size="small"
                   placeholder="Enter promo code"
                   inputProps={{ style: { fontSize: "1rem" } }}
-                  
                 />
                 <Button
                   variant="contained"
@@ -605,7 +614,11 @@ export default function CheckoutPage() {
                 className="!bg-black !text-white w-full hover:!scale-105 !py-3 !transition capitalize !ease-in-out duration-300 !mt-6"
               >
                 {isProcessing ? (
-                  <CircularProgress className="!text-white" size={25}  sx={{ color: "#fff" }} />
+                  <CircularProgress
+                    className="!text-white"
+                    size={25}
+                    sx={{ color: "#fff" }}
+                  />
                 ) : (
                   <Typography className="!text-xs !text-white !font-bold  md:!text-base capitalize">
                     Pay with Paystack

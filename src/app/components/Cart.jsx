@@ -46,12 +46,11 @@ export default function CartPage() {
 
   return (
     <div className="flex flex-col w-[90%] m-auto lg:flex-row py-6 gap-8">
-    
       {/* Cart Items */}
       <div className="flex-1">
-      <IconButton onClick={() => router.back()} aria-label="go back">
-      <ArrowBackIcon />
-    </IconButton>
+        <IconButton onClick={() => router.back()} aria-label="go back">
+          <ArrowBackIcon />
+        </IconButton>
         <h2 className="text-base md:text-xl font-semibold mt-2 mb-4">
           Purchase Summary
         </h2>
@@ -69,16 +68,11 @@ export default function CartPage() {
                 >
                   <div className="flex items-center gap-4">
                     <Image
-                      src={
-                        item.image?.asset?.url ||
-                        item.images?.[0]?.asset?.url ||
-                        "/placeholder.jpg"
-                      }
+                      src={item.image || "/placeholder.jpg"} // ✅ just a string now
                       alt={item.title || "Product image"}
                       width={80}
                       height={80}
                       className="rounded-lg object-cover"
-                      style={{ objectFit: "cover" }}
                     />
                     <div className="flex flex-col gap-3">
                       <p className="text-base">{item.title}</p>
@@ -125,7 +119,9 @@ export default function CartPage() {
 
       {/* Order Summary */}
       <div className="w-full lg:w-[500px] border rounded-xl mt-12 h-3/4 p-6">
-        <h3 className="text-base md:text-xl font-semibold mb-6">Order Summary</h3>
+        <h3 className="text-base md:text-xl font-semibold mb-6">
+          Order Summary
+        </h3>
         <div className="space-y-8">
           {items.map((item, index) => {
             const price = Number(item.price) || 0;

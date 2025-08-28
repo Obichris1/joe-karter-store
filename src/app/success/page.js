@@ -35,7 +35,7 @@ export default function SuccessPage() {
 
           <Button
             variant="contained"
-            onClick={() => router.push("/shop")}
+            onClick={() => router.push("/")}
             className="!bg-black hover:!scale-105 !transition !duration-300 !rounded-xl !capitalize"
           >
             Continue Shopping

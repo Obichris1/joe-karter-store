@@ -3,12 +3,21 @@
 import { useState, useEffect } from "react";
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
-import { TextField, MenuItem,Box,CircularProgress } from "@mui/material";
-import { motion } from "framer-motion"; // <-- import framer-motion
-import { IconButton } from "@mui/material";
+import {
+  TextField,
+  MenuItem,
+  Box,
+  CircularProgress,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/slices/cartSlice"; // adjust path to your slice
 
+// --- Fetch Event from Sanity ---
 async function getEvent() {
   const query = `*[_type == "eventTicket"][0]{
     title,
@@ -27,21 +36,21 @@ async function getEvent() {
 
 export default function EventPage() {
   const [event, setEvent] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
- 
   useEffect(() => {
     const events = async () => {
       const eventResult = await getEvent();
       setEvent(eventResult);
-      setLoading(false)
+      setLoading(false);
     };
     events();
   }, []);
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" py={4}>
-         <CircularProgress size={25}sx={{ color: "#000", fontSize:"2px" }} />
+        <CircularProgress size={25} sx={{ color: "#000" }} />
       </Box>
     );
   }
@@ -62,15 +71,39 @@ export default function EventPage() {
   return <EventDetails event={event} />;
 }
 
+// --- Event Details ---
 function EventDetails({ event }) {
   const [selectedTicket, setSelectedTicket] = useState(event.tickets?.[0]);
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleBuy = () => {
+    if (!selectedTicket) return;
+
+    dispatch(
+      addToCart({
+        _id: `${event.title}-${selectedTicket.name}`, // unique ID
+        slug: event.title.replace(/\s+/g, "-").toLowerCase(),
+        title: `${event.title} - ${selectedTicket.name}`,
+        price: selectedTicket.price,
+        image: event.bannerImageUrl,
+        quantity: 1,
+        size: null,
+        color: null,
+      })
+    );
+
+    // Navigate to checkout
+    router.push("/cart");
+  };
 
   return (
     <div className="flex flex-col gap-4 items-start justify-center mx-auto w-[90%] py-4">
-         <IconButton onClick={() => router.back()} aria-label="go back">
-      <ArrowBackIcon />
-    </IconButton>
+      {/* Back Button */}
+      <IconButton onClick={() => router.back()} aria-label="go back">
+        <ArrowBackIcon />
+      </IconButton>
+
       <p className="text-2xl md:text-3xl mb-6 font-bold">
         NBD athleisure presents: The Playground
       </p>
@@ -109,7 +142,7 @@ function EventDetails({ event }) {
               {new Date(event.date).toLocaleString()}
             </p>
             <p className="text-sm md:text-base leading-7">
-              <span className="font-bold leading-7">Location: </span>
+              <span className="font-bold">Location: </span>
               {event.location}
             </p>
             <p className="text-sm md:text-base leading-7">
@@ -155,22 +188,19 @@ function EventDetails({ event }) {
             </div>
           )}
 
-          {/* Selected Ticket Price & Button */}
+          {/* Selected Ticket Price & Buy Button */}
           {selectedTicket && (
             <div className="flex flex-col md:items-end">
               <h2 className="text-lg font-bold mt-8">
                 Price: ₦{selectedTicket.price}
               </h2>
 
-              <a
-                href={selectedTicket.checkoutUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={handleBuy}
+                className="mt-4 px-8 py-3 text-sm md:text-base bg-black text-white rounded-lg transition-all shadow-md hover:bg-gray-800"
               >
-                <button className="mt-4 px-8 py-3 text-sm md:text-base bg-black text-white rounded-lg transition-all shadow-md hover:bg-gray-800">
-                  Buy {selectedTicket.name}
-                </button>
-              </a>
+                Buy {selectedTicket.name}
+              </button>
             </div>
           )}
         </motion.div>

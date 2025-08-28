@@ -78,7 +78,7 @@ const HeroBanner = ({ banners }) => {
                   {banner?.subTitle}
                 </p>
                 <Link
-                  href={banner?.ctaLink}
+                  href={banner?.ctaLink  || ""}
                   className="bg-white text-black font-semibold md:text-base text-sm px-3 py-2 text-center w-28 rounded-full inline-block"
                 >
                   {banner?.ctaText || "Shop Now"}

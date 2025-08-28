@@ -48,7 +48,7 @@ export default function WishlistPage() {
       ) : items.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 mb-4">Your wishlist is empty</p>
-          <Link href="/shop">
+          <Link href="/">
             <Button variant="contained" className="!bg-black !text-white !py-2 !rounded-lg !text-sm hover:!scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
               Back to Shop
             </Button>
@@ -132,7 +132,7 @@ export default function WishlistPage() {
 
       {!loading && items.length > 0 && (
         <div className="pt-6 mt-6 text-center">
-          <Link href="/shop">
+          <Link href="/">
             <Button variant="contained" className=" !bg-black !text-white !py-2 !rounded-lg !text-sm hover:!scale-105 !capitalize !transition-transform !duration-300 !ease-in-out">
               Continue Shopping
             </Button>
