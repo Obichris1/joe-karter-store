@@ -210,7 +210,7 @@ export default function CheckoutPage() {
 
     const handler = window.PaystackPop.setup({
       // key: paystackTestKey,
-      key: process.env.PAYSTACK_LIVE_KEY,
+      key: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_KEY,
       email: form.email,
       amount: total * 100,
       currency: "NGN",
