@@ -13,7 +13,7 @@ const Home = async () => {
     <>
       <HeroCategories />
       <SupportCards />
-      <NewsletterModal /> {/* ✅ This runs client-side */}
+      <NewsletterModal /> 
     </>
   );
 };
