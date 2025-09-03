@@ -18,7 +18,7 @@ const sections = {
 export default function ProductSections({ products }) {
   const [visibleCounts, setVisibleCounts] = useState({
     topPicks: 8,
-    featured:  6,
+    featured:  8,
     new: 8,
   });
   const dispatch = useDispatch();

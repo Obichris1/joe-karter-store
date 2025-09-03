@@ -8,7 +8,15 @@ const Product = ({ product }) => {
 //   
   
 
-  const imageUrl = images?.length ? urlFor(images[0]).url() : '/placeholder.png'; // ← use fallback
+const firstImage = images?.[0];
+
+const imageUrl =
+  firstImage?.asset?._ref
+    ? urlFor(firstImage).url()
+    : firstImage?.asset?.url
+    ? firstImage.asset.url
+    : "/placeholder.png";
+
 
   return (
     <div>

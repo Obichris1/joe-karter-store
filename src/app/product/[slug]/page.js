@@ -19,7 +19,6 @@ import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/navigation";
 
-
 export default function ProductPage() {
   const dispatch = useDispatch();
   const { slug } = useParams();
@@ -34,6 +33,14 @@ export default function ProductPage() {
   const [useCustomMeasurement, setUseCustomMeasurement] = useState(false);
   const [customMeasurement, setCustomMeasurement] = useState("");
   const [isSliding, setIsSliding] = useState(false);
+
+
+  const SIZES = [
+    "39", "40", "40-41", "41", "41-42", "42-43",
+    "43", "43-44", "44", "44-45", "45", "45-46",
+    "46", "46-47", "47", "47-48"
+  ];
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,13 +58,10 @@ export default function ProductPage() {
       setProduct(result);
     };
 
-
     if (slug) {
       fetchProduct();
-   
     }
   }, [slug]);
-
 
   useEffect(() => {
     if (!product) return; // wait until product is fetched
@@ -76,10 +80,8 @@ export default function ProductPage() {
     };
     fetchRelatedProducts();
   }, [product]); // runs only when product changes
-  
 
-  console.log(product)
-
+ 
   const handleAddToCart = () => {
     dispatch(
       addToCart({
@@ -134,7 +136,6 @@ export default function ProductPage() {
     }, 300);
   };
 
-
   if (!product) {
     return (
       <div className="p-10 flex justify-center items-center">
@@ -145,17 +146,17 @@ export default function ProductPage() {
 
   return (
     <div>
-     
       <div className="max-w-7xl mx-auto w-[90%] py-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-40">
-    
         {/* Images */}
         <div className="relative">
+          <IconButton
+            className="!mb-4"
+            onClick={() => router.back()}
+            aria-label="go back"
+          >
+            <ArrowBackIcon />
+          </IconButton>
 
-        <IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
-      <ArrowBackIcon  />
-    </IconButton>
-   
-          
           <div className="relative aspect-auto rounded-xl overflow-hidden">
             <Image
               src={product.images[selectedImage]?.asset.url}
@@ -191,50 +192,45 @@ export default function ProductPage() {
           </div>
 
           {/* Size */}
-          {product.sizes && (
-            <div>
-              <h3 className="font-semibold mb-1">Size</h3>
+          <div>
+            <h3 className="font-semibold ">Sizes*</h3>
 
-              {!useCustomMeasurement && (
-                <div className="flex gap-2 flex-wrap mb-3">
-                  {product.sizes.map((size) => (
-                    <div
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 border text-xs md:text-sm rounded cursor-pointer ${
-                        selectedSize === size
-                          ? "bg-black text-white"
-                          : "hover:bg-black hover:text-white"
-                      }`}
-                    >
-                      {size}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <Button
-                onClick={() => setUseCustomMeasurement((prev) => !prev)}
-                className="!text-xs !capitalize !text-black !underline !font-normal !p-0"
+            {!useCustomMeasurement && (
+              <select
+                value={selectedSize || ""}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="w-full border p-2 rounded my-3 text-sm"
               >
-                {useCustomMeasurement
-                  ? "Select from standard sizes"
-                  : "Use your own measurement"}
-              </Button>
+                <option value="">Select a size</option>
+                {SIZES.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            )}
 
-              {useCustomMeasurement && (
-                <div className="mt-3">
-                  <input
-                    type="text"
-                    placeholder="Enter your measurement"
-                    value={customMeasurement}
-                    onChange={(e) => setCustomMeasurement(e.target.value)}
-                    className="w-full border p-2 rounded text-xs"
-                  />
-                </div>
-              )}
-            </div>
-          )}
+            <Button
+              onClick={() => setUseCustomMeasurement((prev) => !prev)}
+              className="!text-xs !capitalize !text-black !underline !font-normal !p-0 mt-2"
+            >
+              {useCustomMeasurement
+                ? "Select from standard sizes"
+                : "Use your own measurement"}
+            </Button>
+
+            {useCustomMeasurement && (
+              <div className="mt-3">
+                <input
+                  type="text"
+                  placeholder="Enter your measurement"
+                  value={customMeasurement}
+                  onChange={(e) => setCustomMeasurement(e.target.value)}
+                  className="w-full border p-2 rounded text-xs"
+                />
+              </div>
+            )}
+          </div>
 
           {/* Color */}
           {product.colors && (
