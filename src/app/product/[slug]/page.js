@@ -33,14 +33,59 @@ export default function ProductPage() {
   const [useCustomMeasurement, setUseCustomMeasurement] = useState(false);
   const [customMeasurement, setCustomMeasurement] = useState("");
   const [isSliding, setIsSliding] = useState(false);
+  const [useCustomColor, setUseCustomColor] = useState(false);
+  const [customColor, setCustomColor] = useState("");
 
-
-  const SIZES = [
-    "39", "40", "40-41", "41", "41-42", "42-43",
-    "43", "43-44", "44", "44-45", "45", "45-46",
-    "46", "46-47", "47", "47-48"
+  const LEATHER_SIZES = [
+    "39",
+    "40",
+    "40-41",
+    "41",
+    "41-42",
+    "42-43",
+    "43",
+    "43-44",
+    "44",
+    "44-45",
+    "45",
+    "45-46",
+    "46",
+    "46-47",
+    "47",
+    "47-48",
   ];
-  
+
+  const ATHLEISURE_SIZES = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"];
+
+  const LEATHER_COLORS = ["Black", "Brown", "Tan", "Burgundy", "Navy", "Olive"];
+
+  const ATHLEISURE_COLORS = [
+    "Black",
+    "White",
+    "Gray",
+    "Blue",
+    "Red",
+    "Green",
+    "Yellow",
+    "Purple",
+  ];
+
+  const getSizesForCategory = (category) => {
+    if (!category) return [];
+    if (category.toLowerCase() === "leather") return LEATHER_SIZES;
+    if (category.toLowerCase() === "athleisure") return ATHLEISURE_SIZES;
+    return []; // fallback: no sizes
+  };
+
+  const getColorsForCategory = (category) => {
+    if (category?.toLowerCase().includes("leather")) {
+      return LEATHER_COLORS;
+    }
+    if (category?.toLowerCase().includes("athleisure")) {
+      return ATHLEISURE_COLORS;
+    }
+    return [];
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -81,7 +126,6 @@ export default function ProductPage() {
     fetchRelatedProducts();
   }, [product]); // runs only when product changes
 
- 
   const handleAddToCart = () => {
     dispatch(
       addToCart({
@@ -202,7 +246,7 @@ export default function ProductPage() {
                 className="w-full border p-2 rounded my-3 text-sm"
               >
                 <option value="">Select a size</option>
-                {SIZES.map((size) => (
+                {getSizesForCategory(product.category).map((size) => (
                   <option key={size} value={size}>
                     {size}
                   </option>
@@ -233,26 +277,48 @@ export default function ProductPage() {
           </div>
 
           {/* Color */}
-          {product.colors && (
-            <div>
-              <h3 className="font-semibold mb-1 mt-4">Color</h3>
-              <div className="flex gap-2 flex-wrap">
-                {product.colors.map((color) => (
-                  <div
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`px-4 py-2 border rounded cursor-pointer ${
-                      selectedColor === color
-                        ? "bg-black text-white"
-                        : "hover:bg-black hover:text-white"
-                    }`}
-                  >
+          <div>
+            <h3 className="font-semibold mb-1 mt-4">Color*</h3>
+
+            {!useCustomColor ? (
+              <select
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
+                className="w-full border p-2 rounded text-xs"
+              >
+                <option value="">Select a color</option>
+                {getColorsForCategory(product.category).map((color) => (
+                  <option key={color} value={color}>
                     {color}
-                  </div>
+                  </option>
                 ))}
-              </div>
-            </div>
-          )}
+              </select>
+            ) : (
+              <input
+                type="text"
+                placeholder="Enter your color"
+                value={customColor}
+                onChange={(e) => {
+                  setCustomColor(e.target.value);
+                  setSelectedColor(e.target.value); // keep them in sync
+                }}
+                className="w-full border p-2 rounded text-xs"
+              />
+            )}
+
+            <Button
+              onClick={() => {
+                setUseCustomColor((prev) => !prev);
+                setCustomColor("");
+                setSelectedColor("");
+              }}
+              className="!text-xs !capitalize !text-black !underline !font-normal !p-0 mt-2"
+            >
+              {useCustomColor
+                ? "Select from standard colors"
+                : "Use your own color"}
+            </Button>
+          </div>
 
           {/* Quantity */}
           <div>
