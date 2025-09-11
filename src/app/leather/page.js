@@ -60,7 +60,7 @@ export const getData = async () => {
   
       return {products}
     } catch (error) {
-      console.error("Sanity fetch error:", error);
+      // console.error("Sanity fetch error:", error);
     }
   };
 
