@@ -1,6 +1,5 @@
 import React from "react";
 import ShopPage from "../../components/ShopPage";
-import { serverClient } from "@/sanity/lib/serverClient"; // client WITH token
 import { client } from "@/sanity/lib/client";
 export default async function Shop({ params }) {
   const { category } = params;
