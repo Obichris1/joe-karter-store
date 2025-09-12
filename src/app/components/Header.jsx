@@ -54,7 +54,7 @@ const Header = () => {
   </Link>
 
   <Link
-    href="/playground"
+    href="/theplayground"
     className={`px-3 py-4 rounded-xl transition-colors duration-200
       hover:text-black hover:bg-gray-50
       ${pathname.startsWith('/theplayground') ? 'bg-gray-100 text-black font-semibold ' : 'text-[#dbba5f] font-semibold'}`}
