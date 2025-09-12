@@ -1,97 +1,30 @@
 "use client";
 
-import {
-  Box,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  TextField,
-  Button,
-  CircularProgress,
-  IconButton,
-} from "@mui/material";
-import { useEffect, useState, useRef } from "react";
-import { client } from "@/sanity/lib/client";
-import Link from "next/link";
-import Image from "next/image";
-import {
-  FaShoppingCart,
-  FaHeart,
-  FaRegHeart,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
+import React, { useState } from "react";
+import { Box, Grid, Typography, Select, MenuItem, InputLabel, TextField, Button, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
-import {
-  addToWishlist,
-  removeFromWishlist,
-} from "@/redux/slices/wishListSlice";
+import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishListSlice";
 import { toast, Toaster } from "react-hot-toast";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/navigation";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Link from "next/link";
+import Image from "next/image";
+import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 
-const ShopPage = ({ category }) => {
-  const [products, setProducts] = useState([]);
-  const [allTags, setAllTags] = useState([]);
+ function ShopPage({ category, products = [], allTags = [] }) {
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(8);
   const [subCategory, setSubCategory] = useState("all");
-  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const dispatch = useDispatch();
-  const wishlistData = useSelector(
-    (state) => state.wishlist?.wishlistData || []
-  );
+  const wishlistData = useSelector((state) => state.wishlist?.wishlistData || []);
 
-  useEffect(() => {
-    async function fetchTagsAndProducts() {
-      try {
-        const tags = await client.fetch(
-          `array::unique(*[_type == "product" && category == $category][]['tags'][] )`,
-          { category }
-        );
-        setAllTags(tags || []);
-
-        const products = await client.fetch(
-          `*[_type == "product" && category == $category]{
-            _id, title, slug, price, category, label, tags,
-            images[] { asset->{url} }
-          }`,
-          { category }
-        );
-        setProducts(products || []);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchTagsAndProducts();
-  }, [category]);
-
-  const handleTagChange = (event) => {
-    setSelectedTag(event.target.value);
-    setVisibleCount(8); // reset visible count when filter changes
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value.toLowerCase());
-    setVisibleCount(8); // reset visible count when search changes
-  };
-
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 8);
-  };
-
-  const isInWishlist = (productId) =>
+  const isInWishlist = (id) =>
     Array.isArray(wishlistData) &&
-    wishlistData.some((item) => item._id === productId);
+    wishlistData.some((item) => item._id === id);
 
   const handleWishlistToggle = (e, product) => {
     e.preventDefault();
@@ -110,33 +43,27 @@ const ShopPage = ({ category }) => {
     toast.success("Added to cart 🛒");
   };
 
-  // All products matching current filters
-  const fullyFilteredProducts = products.filter((product) => {
-    const title = product.title?.toLowerCase() || "";
-    const cat = product.category?.toLowerCase() || "";
+  // filtering logic
+  const fullyFilteredProducts = products.filter((p) => {
+    const title = p.title?.toLowerCase() || "";
+    const cat = p.category?.toLowerCase() || "";
     const matchesSearch = title.includes(searchQuery) || cat.includes(searchQuery);
-    const matchesTag = selectedTag === "all" || product.tags?.includes(selectedTag);
+    const matchesTag = selectedTag === "all" || p.tags?.includes(selectedTag);
     const matchesSubCategory =
       category?.toLowerCase() !== "athleisure" ||
       subCategory === "all" ||
-      product.tags?.map((t) => t.toLowerCase()).includes(subCategory.toLowerCase());
+      p.tags?.map((t) => t.toLowerCase()).includes(subCategory.toLowerCase());
 
     return matchesSearch && matchesTag && matchesSubCategory;
   });
 
-  // Products visible on page
   const filteredProducts = fullyFilteredProducts.slice(0, visibleCount);
 
   return (
     <div className="!w-[95%] !m-auto px-6 py-4">
-      <IconButton
-        className="!mb-4"
-        onClick={() => router.back()}
-        aria-label="go back"
-      >
+      <IconButton onClick={() => router.back()}>
         <ArrowBackIcon />
       </IconButton>
-
       <Box mb={4}>
         <Typography
           className="!text-xl md:!text-2xl !mb-4"

@@ -1,12 +1,27 @@
-import React from 'react'
-import ShopPage from '../../components/ShopPage'
+import React from "react";
+import ShopPage from "../../components/ShopPage";
+import { serverClient } from "@/sanity/lib/serverClient"; // client WITH token
+import { client } from "@/sanity/lib/client";
+export default async function Shop({ params }) {
+  const { category } = params;
 
-const Shop = ({params}) => {
+  // ✅ Fetch on the server
+  const tags = await client.fetch(
+    `array::unique(*[_type == "product" && category == $category][]['tags'][] )`,
+    { category }
+  );
+
+  const products = await client.fetch(
+    `*[_type == "product" && category == $category]{
+      _id, title, slug, price, category, label, tags,
+      images[] { asset->{url} }
+    }`,
+    { category }
+  );
+
   return (
-    <div className=''>
-        <ShopPage category={params.category} />
+    <div>
+      <ShopPage category={category} products={products} allTags={tags} />
     </div>
-  )
+  );
 }
-
-export default Shop
