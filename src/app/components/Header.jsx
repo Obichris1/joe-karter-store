@@ -57,7 +57,7 @@ const Header = () => {
     href="/playground"
     className={`px-3 py-4 rounded-xl transition-colors duration-200
       hover:text-black hover:bg-gray-50
-      ${pathname.startsWith('/playground') ? 'bg-gray-100 text-black font-semibold ' : 'text-[#dbba5f] font-semibold'}`}
+      ${pathname.startsWith('/theplayground') ? 'bg-gray-100 text-black font-semibold ' : 'text-[#dbba5f] font-semibold'}`}
   >
     The Playground
   </Link>
@@ -176,7 +176,7 @@ const Header = () => {
 
 
       <Link
-        href="/playground"
+        href="/theplayground"
         onClick={() => setMobileOpen(false)}
         className="flex items-center gap-3 text-sm mb-10 text-[#dbba5f] font-bold"
       >
