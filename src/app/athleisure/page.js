@@ -21,7 +21,7 @@ return (
 export const getData = async () => {
   // const query = '*[_type == "product"]';
   // const products = await client.fetch(query);
-  const bannerQuery = `*[_type == "banner" && category == "athleisure"]{ title, image, ctaText, ctaLink }`;
+  const bannerQuery = `*[_type == "banner" && category == "athleisure"]{ title, image, ctaText, ctaLink,  subTitle,}`;
 
   const banners= await client.fetch(bannerQuery);
 

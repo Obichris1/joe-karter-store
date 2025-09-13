@@ -11,6 +11,7 @@ const HeroBanner = ({ banners }) => {
   const currentRef = useRef(0);
   const intervalRef = useRef(null);
 
+
   if (!banners || banners.length === 0) return null;
 
   useEffect(() => {
@@ -34,6 +35,8 @@ const HeroBanner = ({ banners }) => {
   const banner = banners[current];
   const hasVideo = !!banner?.video?.asset?.url;
   const hasImage = !!banner?.image;
+
+  console.log(banner)
 
   return (
     <div className="relative w-full h-[90vh] overflow-hidden">

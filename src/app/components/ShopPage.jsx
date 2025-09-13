@@ -1,7 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import { Box, Grid, Typography, Select, MenuItem, InputLabel, TextField, Button, IconButton } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  TextField,
+  Button,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
 import { addToWishlist, removeFromWishlist } from "@/redux/slices/wishListSlice";
@@ -10,21 +21,42 @@ import { useRouter } from "next/navigation";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import Image from "next/image";
-import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaHeart,
+  FaRegHeart,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 
- function ShopPage({ category, products = [], allTags = [] }) {
+export default function ShopPage({ category, products = [], allTags = [] }) {
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(8);
   const [subCategory, setSubCategory] = useState("all");
+  const [loading, setLoading] = useState(false); // server provides data so default false
 
   const router = useRouter();
   const dispatch = useDispatch();
   const wishlistData = useSelector((state) => state.wishlist?.wishlistData || []);
 
+  // Handlers that were missing
+  const handleTagChange = (e) => {
+    setSelectedTag(e.target.value);
+    setVisibleCount(8);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+    setVisibleCount(8);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 8);
+  };
+
   const isInWishlist = (id) =>
-    Array.isArray(wishlistData) &&
-    wishlistData.some((item) => item._id === id);
+    Array.isArray(wishlistData) && wishlistData.some((item) => item._id === id);
 
   const handleWishlistToggle = (e, product) => {
     e.preventDefault();
@@ -61,15 +93,12 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 
   return (
     <div className="!w-[95%] !m-auto px-6 py-4">
-      <IconButton onClick={() => router.back()}>
+      <IconButton className="!mb-4" onClick={() => router.back()} aria-label="go back">
         <ArrowBackIcon />
       </IconButton>
+
       <Box mb={4}>
-        <Typography
-          className="!text-xl md:!text-2xl !mb-4"
-          fontWeight="bold"
-          gutterBottom
-        >
+        <Typography className="!text-xl md:!text-2xl !mb-4" fontWeight="bold" gutterBottom>
           Shop all products
         </Typography>
 
@@ -83,10 +112,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
           justifyContent="space-between"
         >
           <Box flex={1} width="100%">
-            <InputLabel
-              id="tag-select-label"
-              className="!font-bold !text-sm md:!text-base !mb-1"
-            >
+            <InputLabel id="tag-select-label" className="!font-bold !text-sm md:!text-base !mb-1">
               Filter by categories
             </InputLabel>
             <Select
@@ -100,11 +126,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
                 All
               </MenuItem>
               {allTags.map((tag) => (
-                <MenuItem
-                  key={tag}
-                  value={tag}
-                  className="!text-sm md:!text-base"
-                >
+                <MenuItem key={tag} value={tag} className="!text-sm md:!text-base">
                   {tag}
                 </MenuItem>
               ))}
@@ -112,10 +134,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
           </Box>
 
           <Box flex={1} width="100%">
-            <InputLabel
-              htmlFor="search"
-              className="!font-bold !text-sm md:!text-base !mb-1"
-            >
+            <InputLabel htmlFor="search" className="!font-bold !text-sm md:!text-base !mb-1">
               Search products
             </InputLabel>
             <TextField
@@ -130,10 +149,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 
           {category?.toLowerCase() === "athleisure" && (
             <Box flex={1} width="100%">
-              <InputLabel
-                id="sub-category-label"
-                className="!font-bold !text-sm md:!text-base !mb-1"
-              >
+              <InputLabel id="sub-category-label" className="!font-bold !text-sm md:!text-base !mb-1">
                 Filter by Timeline
               </InputLabel>
               <Select
@@ -143,10 +159,18 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
                 onChange={(e) => setSubCategory(e.target.value)}
                 className="!text-sm md:!text-base"
               >
-                <MenuItem className="!text-xs md:!text-sm" value="all">All</MenuItem>
-                <MenuItem className="!text-xs md:!text-sm"  value="mantra">The Mantra</MenuItem>
-                <MenuItem className="!text-xs md:!text-sm"  value="origin">The Origin</MenuItem>
-                <MenuItem className="!text-xs md:!text-sm"  value="aftermath">The Aftermath</MenuItem>
+                <MenuItem className="!text-xs md:!text-sm" value="all">
+                  All
+                </MenuItem>
+                <MenuItem className="!text-xs md:!text-sm" value="mantra">
+                  The Mantra
+                </MenuItem>
+                <MenuItem className="!text-xs md:!text-sm" value="origin">
+                  The Origin
+                </MenuItem>
+                <MenuItem className="!text-xs md:!text-sm" value="aftermath">
+                  The Aftermath
+                </MenuItem>
               </Select>
             </Box>
           )}
@@ -155,7 +179,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 
       {loading ? (
         <Box display="flex" justifyContent="center" mt={6}>
-          <CircularProgress size={24} color="#000" />
+          <CircularProgress size={24} />
         </Box>
       ) : filteredProducts.length === 0 ? (
         <Box textAlign="center" mt={10}>
@@ -167,20 +191,12 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
         <div className="grid grid-cols-2 gap md:grid-cols-5 gap-3">
           {filteredProducts.map((product) => (
             <Grid item xs={6} sm={6} md={3} key={product._id}>
-              <Link
-                href={`/product/${product.slug.current}`}
-                className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block"
-              >
+              <Link href={`/product/${product.slug.current}`} className="p-2 bg-white rounded-2xl shadow-sm hover:shadow-md transition-transform duration-300 block">
                 <div className="aspect-square relative rounded-t-2xl overflow-hidden group">
                   {product.images?.length > 1 ? (
                     <ImageSlider images={product.images} />
                   ) : (
-                    <Image
-                      src={product.images?.[0]?.asset?.url || "/placeholder.jpg"}
-                      alt={product.title}
-                      fill
-                      className="object-cover transition duration-300"
-                    />
+                    <Image src={product.images?.[0]?.asset?.url || "/placeholder.jpg"} alt={product.title} fill className="object-cover transition duration-300" />
                   )}
                 </div>
 
@@ -188,33 +204,14 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
                   <h3 className="font-semibold text-sm">{product.title}</h3>
                   <p className="text-xs text-gray-500">{product.category}</p>
                   <p className="font-bold text-sm md:text-base self-end">
-                    ₦
-                    {typeof product.price === "number"
-                      ? product.price.toLocaleString()
-                      : "0"}
+                    ₦{typeof product.price === "number" ? product.price.toLocaleString() : "0"}
                   </p>
 
                   <div className="flex justify-between items-center mt-2">
-                    <button
-                      onClick={(e) => handleWishlistToggle(e, product)}
-                      className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
-                      aria-label={
-                        isInWishlist(product._id)
-                          ? "Remove from wishlist"
-                          : "Add to wishlist"
-                      }
-                    >
-                      {isInWishlist(product._id) ? (
-                        <FaHeart className="text-red-500" />
-                      ) : (
-                        <FaRegHeart />
-                      )}
+                    <button onClick={(e) => handleWishlistToggle(e, product)} className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition" aria-label={isInWishlist(product._id) ? "Remove from wishlist" : "Add to wishlist"}>
+                      {isInWishlist(product._id) ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
                     </button>
-                    <button
-                      onClick={(e) => handleAddToCart(e, product)}
-                      className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition"
-                      aria-label="Add to cart"
-                    >
+                    <button onClick={(e) => handleAddToCart(e, product)} className="bg-white p-2 rounded-full shadow hover:bg-gray-100 transition" aria-label="Add to cart">
                       <FaShoppingCart />
                     </button>
                   </div>
@@ -227,11 +224,7 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
 
       {!loading && fullyFilteredProducts.length > filteredProducts.length && (
         <Box mt={6} textAlign="center">
-          <Button
-            variant="outlined"
-            className="!border !px-6 !py-2 !rounded-full md:!text-sm !text-xs !text-black !border-black hover:!bg-black hover:!text-white !capitalize !transition"
-            onClick={handleLoadMore}
-          >
+          <Button variant="outlined" className="!border !px-6 !py-2 !rounded-full md:!text-sm !text-xs !text-black !border-black hover:!bg-black hover:!text-white !capitalize !transition" onClick={handleLoadMore}>
             Load More
           </Button>
         </Box>
@@ -240,11 +233,10 @@ import { FaShoppingCart, FaHeart, FaRegHeart } from "react-icons/fa";
       <Toaster />
     </div>
   );
-};
+}
 
-export default ShopPage;
-
-function ImageSlider({ images }) {
+/* ImageSlider component */
+function ImageSlider({ images = [] }) {
   const [index, setIndex] = useState(0);
   const intervalRef = useRef(null);
 
@@ -267,27 +259,14 @@ function ImageSlider({ images }) {
 
   return (
     <div className="relative w-full h-full">
-      <Image
-        src={images[index]?.asset?.url || "/placeholder.jpg"}
-        alt="Product Image"
-        fill
-        className="object-cover transition duration-500"
-      />
+      <Image src={images[index]?.asset?.url || "/placeholder.jpg"} alt="Product Image" fill className="object-cover transition duration-500" />
 
       {images.length > 1 && (
         <>
-          <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
-            aria-label="Previous Image"
-          >
+          <button onClick={prevImage} className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1" aria-label="Previous Image">
             <FaChevronLeft size={14} />
           </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1"
-            aria-label="Next Image"
-          >
+          <button onClick={nextImage} className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full p-1" aria-label="Next Image">
             <FaChevronRight size={14} />
           </button>
         </>

@@ -11,6 +11,9 @@ const fadeInUp = {
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6 md:px-20 space-y-24">
+      <h1 className="text-2xl md:text-4xl font-bold">
+        About Us
+      </h1>
       {/* NBD ATHLEISURE Section */}
       <section className="grid md:grid-cols-2 gap-20 items-center">
         <motion.div
@@ -20,7 +23,7 @@ export default function AboutPage() {
           transition={{ duration: 0.7 }}
           className="space-y-6"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900">
             NBD Athleisure
           </h2>
           <p className="text-gray-700 text-sm md:text-base leading-7">
@@ -82,7 +85,7 @@ export default function AboutPage() {
           transition={{ duration: 0.7 }}
           className="space-y-6 order-1 md:order-2"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-7">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 leading-7">
             Joe Karter Shoes
           </h2>
           <p className="text-gray-700 text-sm md:text-base leading-7">

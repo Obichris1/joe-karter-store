@@ -50,7 +50,8 @@ const Footer = () => {
         <div className="flex flex-col items-center text-xs md:text-sm  gap-3">
           <a href="#">Linkedin</a>
           <a href="#">Twitter</a>
-          <a href="#">Instagram</a>
+          <a href="https://www.instagram.com/joekarter_/">Joe Karter Instagram</a>
+          <a href="https://www.instagram.com/nbd.athleisure/">NBD Athleisure Instagram</a>
           <a href="#">Facebook</a>
         </div>
       </div>

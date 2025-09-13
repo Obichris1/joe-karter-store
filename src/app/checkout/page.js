@@ -63,11 +63,10 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   const deliveryFees = {
-    mainland: 500,
-    island: 1000,
-    ikorodu: 800,
-    epe: 1500,
-    badagry: 1200,
+    mainland: 4000,
+    island: 6000,
+    ikorodu: 6000,
+   Ajah: 7000,
   };
 
   const deliveryFee = deliveryFees[form.deliveryLocation] || 0;

@@ -6,7 +6,7 @@ import MapEmbed from "../components/MapEmbed";
 import Link from "next/link";
 
 import {
-  AiOutlineMail,
+  AiFillMail,
   AiOutlinePhone,
   AiOutlineInstagram,
   AiFillFacebook,
@@ -53,7 +53,7 @@ const page = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          Contact Joe Karter
+          Contact Us
         </motion.h1>
       </motion.div>
     
@@ -66,12 +66,12 @@ const page = () => {
           >
         <Typography className="!font-bold !text-sm md:!text-base !mb-2 ">CONTACT</Typography>
         <div className="flex gap-3 items-center justify-center">
-          <AiFillPhone className="text-sm" />{" "}
+          <AiFillMail className="text-sm" />{" "}
           <Link
             href="tel:+234 916 523 5934"
             className="mr-4 text-[#333]  !font-bold !text-base"
           >
-            0916 523 5934
+            joekarterng@gmail.com
           </Link>
         </div>
         </motion.div>
@@ -105,11 +105,21 @@ const page = () => {
         {/* SOCIAL MEDIA  */}
         <div className="flex  md:self-end  items-center gap-4 mt-12">
           <Link
-            href=""
+            href="https://www.instagram.com/joekarter_/"
             target="_blank"
-            className=" rounded-full text-[#E12F6C] !text-xl  md:!text-3xl hover:scale-110  transition"
+            className=" rounded-full text-[#E12F6C] flex items-center gap-2  hover:scale-110  transition"
           >
-            <AiOutlineInstagram />
+            <AiOutlineInstagram className="!text-xl  md:!text-3xl"  />
+            <span>Joe Karter</span>
+          </Link>
+
+          <Link
+            href="https://www.instagram.com/nbd.athleisure/"
+            target="_blank"
+            className=" rounded-full text-[#E12F6C] flex items-center gap-2  hover:scale-110  transition"
+          >
+            <AiOutlineInstagram className="!text-xl  md:!text-3xl" />
+            <span>NBD Athleisure</span>
           </Link>
 
           <Link

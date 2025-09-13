@@ -196,7 +196,7 @@ const Header = () => {
 
 
       <Link
-        href="/"
+        href="/about"
         onClick={() => setMobileOpen(false)}
         className="flex items-center gap-3 text-sm mb-10 text-gray-80 font-bold"
       >
