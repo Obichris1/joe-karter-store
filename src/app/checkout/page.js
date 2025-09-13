@@ -379,7 +379,7 @@ export default function CheckoutPage() {
                   component="legend"
                   className="!text-sm !mb-4 !font-bold md:!text-base !text-black"
                 >
-                  Select your delivery location( Do not select if you're buying only tickets )
+                  Select your delivery location (Do not select if you're buying only tickets.)
                 </FormLabel>
                 <RadioGroup
                   name="deliveryLocation"
