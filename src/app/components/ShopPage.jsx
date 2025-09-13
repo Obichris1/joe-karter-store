@@ -71,9 +71,22 @@ export default function ShopPage({ category, products = [], allTags = [] }) {
 
   const handleAddToCart = (e, product) => {
     e.preventDefault();
-    dispatch(addToCart({ ...product, quantity: 1 }));
+    const firstImage = product.images?.[0]?.asset?.url || "/placeholder.jpg";
+  
+    dispatch(
+      addToCart({
+        _id: product._id,
+        title: product.title,
+        price: product.price,
+        slug: product.slug?.current,
+        image: firstImage,   // ✅ normalized field
+        quantity: 1,
+      })
+    );
+  
     toast.success("Added to cart 🛒");
   };
+  
 
   // filtering logic
   const fullyFilteredProducts = products.filter((p) => {

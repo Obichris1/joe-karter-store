@@ -77,7 +77,7 @@ const HeroBanner = ({ banners }) => {
                 <h1 className="text-2xl md:text-3xl font-bold">
                   {banner?.title}
                 </h1>
-                <p className="!text-base text-white md:!text-xl">
+                <p className="!text-sm text-white md:!text-lg">
                   {banner?.subTitle}
                 </p>
                 <Link

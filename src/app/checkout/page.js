@@ -390,7 +390,7 @@ export default function CheckoutPage() {
                   <FormControlLabel
                     value="mainland"
                     control={<Radio size="small" className="!text-black" />}
-                    label="Lagos Mainland Axis (₦500)"
+                    label="Lagos Mainland Axis (₦4000)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
                     }}
@@ -398,7 +398,7 @@ export default function CheckoutPage() {
                   <FormControlLabel
                     value="island"
                     control={<Radio size="small" className="!text-black" />}
-                    label="Island Axis (₦1000)"
+                    label="Island Axis (₦6000)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
                     }}
@@ -406,23 +406,16 @@ export default function CheckoutPage() {
                   <FormControlLabel
                     value="ikorodu"
                     control={<Radio size="small" className="!text-black" />}
-                    label="Ikorodu (₦800)"
+                    label="Ikorodu & Axis (₦6000)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
                     }}
                   />
+
                   <FormControlLabel
-                    value="epe"
+                    value="ajah"
                     control={<Radio size="small" className="!text-black" />}
-                    label="Epe (₦1500)"
-                    sx={{
-                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
-                    }}
-                  />
-                  <FormControlLabel
-                    value="badagry"
-                    control={<Radio size="small" className="!text-black" />}
-                    label="Badagry (₦1200)"
+                    label="Ajah(₦7000)"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
                     }}
