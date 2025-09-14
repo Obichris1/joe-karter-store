@@ -148,21 +148,11 @@ export default function CartPage() {
           </div>
         </div>
 
-        {items.map((item) => {
-          item.type ? (
-            <Link href="/checkout">
-              <Button className="!mt-8 !w-full !bg-black !text-white !capitalize !py-3 !rounded-xl !text-sm  hover:!scale-105 !transition-transform !duration-300 !ease-in-out">
-                Checkout
-              </Button>
-            </Link>
-          ) : (
-            <Link href="/checkout-ticket">
-              <Button className="!mt-8 !w-full !bg-black !text-white !capitalize !py-3 !rounded-xl !text-sm  hover:!scale-105 !transition-transform !duration-300 !ease-in-out">
-                Checkout
-              </Button>
-            </Link>
-          );
-        })}
+        <Link href="/checkout">
+          <Button className="!mt-8 !w-full !bg-black !text-white !capitalize !py-3 !rounded-xl !text-sm  hover:!scale-105 !transition-transform !duration-300 !ease-in-out">
+            Checkout
+          </Button>
+        </Link>
       </div>
     </div>
   );
