@@ -66,7 +66,8 @@ export default function CheckoutPage() {
     mainland: 4000,
     island: 6000,
     ikorodu: 6000,
-   Ajah: 7000,
+    Ajah: 7000,
+    none : 0
   };
 
   const deliveryFee = deliveryFees[form.deliveryLocation] || 0;
@@ -228,8 +229,6 @@ export default function CheckoutPage() {
         ],
       },
       callback: function (response) {
- 
-      
         (async () => {
           try {
             const res = await fetch("/api/verify-payment", {
@@ -239,7 +238,7 @@ export default function CheckoutPage() {
             });
 
             const data = await res.json();
-       
+
             if (data.success) {
               toast.success("Payment verified ✅");
               router.push("/success");
@@ -284,17 +283,20 @@ export default function CheckoutPage() {
   return (
     <div className="flex flex-col md:w-[95%] mx-auto py-8 px-3 md:px-6 md:flex-row gap-36">
       {/* Shipping Info */}
-     
+
       <motion.div
         initial={{ x: -80, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
         className="w-full md:w-[50%]"
       >
-
-<IconButton onClick={() => router.back()} aria-label="go back" className="!mb-5">
-        <ArrowBackIcon />
-      </IconButton>
+        <IconButton
+          onClick={() => router.back()}
+          aria-label="go back"
+          className="!mb-5"
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Paper className="md:!p-8 !p-4 !rounded-xl">
           <Typography
             variant="h6"
@@ -379,7 +381,7 @@ export default function CheckoutPage() {
                   component="legend"
                   className="!text-sm !mb-4 !font-bold md:!text-base !text-black"
                 >
-                  Select your delivery location (Do not select if you're buying only tickets.)
+                  Select your delivery location (Select if you're shopping products only and not tickets.)
                 </FormLabel>
                 <RadioGroup
                   name="deliveryLocation"
@@ -416,6 +418,15 @@ export default function CheckoutPage() {
                     value="ajah"
                     control={<Radio size="small" className="!text-black" />}
                     label="Ajah(₦7000)"
+                    sx={{
+                      "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
+                    }}
+                  />
+
+                  <FormControlLabel
+                    value="none"
+                    control={<Radio size="small" className="!text-black" />}
+                    label="None"
                     sx={{
                       "& .MuiFormControlLabel-label": { fontSize: "0.8rem" },
                     }}
