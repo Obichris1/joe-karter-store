@@ -24,7 +24,6 @@ export default function EventDetails({ event }) {
         slug: event.title.replace(/\s+/g, "-").toLowerCase(),
         title: `${event.title} - ${selectedTicket.name}`,
         price: selectedTicket.price,
-        type: "ticket",
         image: event.bannerImageUrl,
         quantity: 1,
         size: null,
