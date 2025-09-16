@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button, Typography, Box } from "@mui/material";
 import Image from "next/image";
@@ -15,29 +15,24 @@ export default function AboutBanner() {
           className="flex-1"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <h1 className="!font-bold md:!mb-8 !mb-4 !text-lg md:!text-3xl">
             Need Leather?
           </h1>
-          <p
-      
-            className="!text-sm md:!text-base !leading-6  md:!leading-7 md:!mb-12"
-          >
-            Our people have spoken and we’re #1 on Glassdoor’s Best Places to
-            Work list in the Nigeria and the UK. Since the rankings debuted in
-            2009, we've ranked among the top four companies in the US every
-            single year and have now earned the #1 spot a record six times.
-          </p>
-          <p
-      
-            className="!text-sm md:!text-base !mt-6 !leading-6 md:!leading-7"
-          >
-            Our people have spoken and we’re #1 on Glassdoor’s Best Places to
-            Work list in the Nigeria and the UK. Since the rankings debuted in
-            2009, we've ranked among the top four companies in the US every
-            single year and have now earned the #1 spot a record six times.
+          <p className="!text-sm md:!text-base !leading-6  md:!leading-7 md:!mb-12">
+            At Joe Karter Shoes, leather isn’t just material — it’s a statement
+            of class, durability, and timeless design. Every pair is handcrafted
+            with precision, blending luxury with everyday versatility. From
+            boardrooms to evenings out, our footwear is built to make lasting
+            impressions without compromising comfort.
+            <p className="!text-sm md:!text-base !mt-6 !leading-6 md:!leading-7">
+              We source only premium leather, ensuring that each shoe tells a
+              story of craftsmanship, sophistication, and confidence. Joe Karter
+              Shoes is more than footwear — it’s the mark of those who know
+              style is an investment.
+            </p>
           </p>
 
           <Link
@@ -57,7 +52,7 @@ export default function AboutBanner() {
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
           className="flex justify-center"
         >
