@@ -125,7 +125,7 @@ export default function EventDetails({ event }) {
             </div>
           )}
 
-          {/* Selected Ticket Price & Buy Button */}
+          {/* Selected Ticket Price & Buy Button  */}
           {selectedTicket && (
             <div className="flex flex-col md:items-end">
               <h2 className="text-lg font-bold mt-8">
