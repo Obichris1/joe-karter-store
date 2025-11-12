@@ -38,10 +38,10 @@ export const metadata = {
     canonical: "https://www.joekarter.com",
   },
   icons: {
-    icon: "/favicon.ico", // favicon must be inside /public
+    icon: "/favicon.ico", 
   },
   other: {
-    "google-site-verification": "6UUZf6MnAn0myKAuwyfKApy81Mfu1aCWFC3jumb8Hp4", // ✅ Google verification tag
+    "google-site-verification": "6UUZf6MnAn0myKAuwyfKApy81Mfu1aCWFC3jumb8Hp4", 
   },
 };
 

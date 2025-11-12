@@ -1,4 +1,3 @@
-// app/event/EventDetails.tsx
 "use client";
 
 import { useState } from "react";
@@ -9,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/slices/cartSlice";
+import { toast } from "react-hot-toast"; 
 
 export default function EventDetails({ event }) {
   const [selectedTicket, setSelectedTicket] = useState(event.tickets?.[0]);
@@ -17,6 +17,15 @@ export default function EventDetails({ event }) {
 
   const handleBuy = () => {
     if (!selectedTicket) return;
+
+    console.log(selectedTicket);
+    
+
+    // 🟢 Check if selected ticket is VIP
+    if (selectedTicket.name?.toLowerCase() === "vip tickets ") {
+      toast.error("VIP Tickets are sold out.");
+      return;
+    }
 
     dispatch(
       addToCart({
@@ -117,7 +126,11 @@ export default function EventDetails({ event }) {
                 }}
               >
                 {event.tickets.map((ticket) => (
-                  <MenuItem key={ticket.name} value={ticket.name}>
+                  <MenuItem
+                    key={ticket.name}
+                    value={ticket.name}
+                    disabled={ticket.name?.toLowerCase() === "vip tickets (sold out)"} // 🟢 Optionally disable in dropdown
+                  >
                     {ticket.name} — ₦{ticket.price.toLocaleString()}
                   </MenuItem>
                 ))}
@@ -134,9 +147,15 @@ export default function EventDetails({ event }) {
 
               <button
                 onClick={handleBuy}
-                className="mt-4 px-8 py-3 text-sm md:text-base bg-black text-white rounded-lg transition-all shadow-md hover:bg-gray-800"
+                className={`mt-4 px-8 py-3 text-sm md:text-base rounded-lg transition-all shadow-md ${
+                  selectedTicket.name?.toLowerCase() === "vip"
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : "bg-black text-white hover:bg-gray-800"
+                }`}
               >
-                Buy {selectedTicket.name}
+                {selectedTicket.name?.toLowerCase() === "vip"
+                  ? "Sold Out"
+                  : `Buy ${selectedTicket.name}`}
               </button>
             </div>
           )}
