@@ -66,7 +66,6 @@ export default function ProductPage() {
     "Blue",
     "Red",
     "Green",
-    "Yellow",
     "Purple",
   ];
 
