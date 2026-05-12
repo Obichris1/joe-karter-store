@@ -4,5 +4,6 @@ import promo from "./promo"
 import eventTickets from "./eventTickets"
 
 export const schema = {
+  
   types: [banner, product, promo,eventTickets],
 }
